@@ -1,3 +1,7 @@
+#pragma once
+
+#include "../misc/Modular.hpp"
+
 namespace CNM {
     const static int N = 200005;
     Mint fact[N], invfact[N];
