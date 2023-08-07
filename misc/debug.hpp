@@ -2,14 +2,7 @@
 
 #include <bits/stdc++.h>
 
-using std::array;
-using std::tuple;
-using std::list;
-using std::set;
-using std::map;
-using std::priority_queue;
-using std::ostream;
-using std::vector;
+using namespace std;
 using Long = long long;
  
 template <typename Tuple, size_t... Index>
