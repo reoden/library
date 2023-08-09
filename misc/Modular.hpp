@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <string>
 #include <type_traits>
+#include <cassert>
 
 using std::decay;
 using std::enable_if;
