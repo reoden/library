@@ -4,7 +4,7 @@
 
 using namespace std;
 using Long = long long;
- 
+
 template <typename Tuple, size_t... Index>
 std::ostream &serialize_tuple(std::ostream &out, const Tuple &t,
                               index_sequence<Index...>) {
@@ -12,17 +12,17 @@ std::ostream &serialize_tuple(std::ostream &out, const Tuple &t,
   (..., (out << (Index == 0 ? "" : ", ") << std::get<Index>(t)));
   return out << ")";
 }
- 
+
 template <typename A, typename B>
 std::ostream &operator<<(std::ostream &out, const std::pair<A, B> &v) {
   return out << "(" << v.first << ", " << v.second << ")";
 }
- 
+
 template <typename... T>
 std::ostream &operator<<(std::ostream &out, const std::tuple<T...> &t) {
   return serialize_tuple(out, t, std::make_index_sequence<sizeof...(T)>());
 }
- 
+
 template <typename T>
 std::ostream &operator<<(std::ostream &out, const std::vector<T> &v) {
   out << "[";
@@ -37,12 +37,12 @@ std::ostream &operator<<(std::ostream &out, const std::vector<T> &v) {
   }
   return out << "]";
 }
- 
+
 template <typename T, size_t N>
 std::ostream &operator<<(std::ostream &out, const std::array<T, N> &v) {
   return out << std::vector<T>(v.begin(), v.end());
 }
- 
+
 template <typename T>
 std::ostream &operator<<(std::ostream &out, const std::list<T> &v) {
   out << "[";
@@ -57,7 +57,7 @@ std::ostream &operator<<(std::ostream &out, const std::list<T> &v) {
   }
   return out << "]";
 }
- 
+
 template <typename K>
 std::ostream &operator<<(std::ostream &out, const std::set<K> &s) {
   out << "{";
@@ -72,7 +72,7 @@ std::ostream &operator<<(std::ostream &out, const std::set<K> &s) {
   }
   return out << "}";
 }
- 
+
 template <typename K, typename V>
 std::ostream &operator<<(std::ostream &out, const std::map<K, V> &m) {
   out << "{";
@@ -87,7 +87,7 @@ std::ostream &operator<<(std::ostream &out, const std::map<K, V> &m) {
   }
   return out << "}";
 }
- 
+
 template <typename T, typename S, typename C>
 ostream &operator<<(ostream &out, priority_queue<T, S, C> pq) {
   vector<T> v;
@@ -97,22 +97,22 @@ ostream &operator<<(ostream &out, priority_queue<T, S, C> pq) {
   }
   return out << v;
 }
- 
+
 struct DebugLine {
   explicit DebugLine(int lineno) { std::cerr << lineno << "L "; }
- 
+
   ~DebugLine() { std::cerr << std::endl; }
- 
+
   template <typename T> DebugLine &operator<<(T &&v) {
     std::cerr << std::forward<T>(v);
     return *this;
   }
 };
- 
+
 #define KV(x) #x "=" << (x) << ";"
 #define KV1(x) #x << "=" << (x) + 1 << ";"
 #define DEBUG DebugLine(__LINE__)
- 
+
 #ifdef LOCAL
 #define debug(x...)                                                            \
   std::cerr << "[\033[32mDEBUG\033[m] ";                                       \
@@ -128,7 +128,7 @@ template <class T, class... Ts> void rd_debug(const T &arg, const Ts &...args) {
   std::cerr << arg << " ";
   rd_debug(args...);
 }
- 
+
 #define dump(x) std::cerr << "\033[1;31m" << KV(x) << "\033[39;0m\n";
 #else
 #define debug(...) (void(0))

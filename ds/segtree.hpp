@@ -1,20 +1,20 @@
 #pragma once
 
-#include <vector>
 #include <functional>
+#include <vector>
 
 using namespace std;
 
 template <class Info> struct SegmentTree {
   int n;
   vector<Info> info;
- 
+
   SegmentTree() {}
- 
+
   SegmentTree(int n, Info _init = Info()) { init(vector<Info>(n, _init)); }
- 
+
   SegmentTree(const vector<Info> &_init) { init(_init); }
- 
+
   void init(const vector<Info> &_init) {
     n = (int)_init.size();
     info.assign((n << 2) + 1, Info());
@@ -30,9 +30,9 @@ template <class Info> struct SegmentTree {
     };
     build(1, 1, n);
   }
- 
+
   void pull(int p) { info[p] = info[2 * p] + info[2 * p + 1]; }
- 
+
   void modify(int p, int l, int r, int x, const Info &v) {
     if (l == r) {
       info[p] = v;
@@ -46,9 +46,9 @@ template <class Info> struct SegmentTree {
     }
     pull(p);
   }
- 
+
   void modify(int p, const Info &v) { modify(1, 1, n, p, v); }
- 
+
   Info query(int p, int l, int r, int x, int y) {
     if (l > y || r < x) {
       return Info();
@@ -59,6 +59,6 @@ template <class Info> struct SegmentTree {
     int m = (l + r) / 2;
     return query(2 * p, l, m, x, y) + query(2 * p + 1, m + 1, r, x, y);
   }
- 
+
   Info query(int l, int r) { return query(1, 1, n, l, r); }
 };
