@@ -32,19 +32,54 @@ template <typename T = string> struct Rolling_Hash {
 
   ull get_all_hash() const { return hashed[n]; }
 
+  // s[l1:r1] と s[l2:r2] の最長共通接頭辞
+  int lcp(int l1, int r1, int l2, int r2) {
+    int ok = 0, ng = min(r1 - l1, r2 - l2) + 1;
+    while (ng - ok > 1) {
+      int mid = (ok + ng) / 2;
+      (get_hash(l1, l1 + mid) == get_hash(l2, l2 + mid) ? ok : ng) = mid;
+    }
+    return ok;
+  }
+
   // s[l1:r1) と s[l2:r2) の辞書順大小比較 (-1 : <, 0 : =, 1 : >)
   int comp(int l1, int r1, int l2, int r2) {
-    int l = 0, r = min(r1 - l1, r2 - l2) + 1;
-    while (r - l > 1) {
-      int m = (l + r) / 2;
-      (get_hash(l1, l1 + m) == get_hash(l2, l2 + m) ? l : r) = m;
-    }
-    if (r1 == l1 + l && r2 == l2 + l)
-      return 0;
-    if (r1 == l1 + l)
-      return -1;
-    if (r2 == l2 + l)
-      return 1;
-    return get_hash(l1 + l, l1 + l + 1) < get_hash(l2 + l, l2 + l + 1) ? -1 : 1;
+    int d = lcp(l1, r1, l2, r2);
+    if (r1 == l1 + d && r2 == l2 + d) return 0;
+    if (r1 == l1 + d) return -1;
+    if (r2 == l2 + d) return 1;
+    return get_hash(l1 + d, l1 + d + 1) < get_hash(l2 + d, l2 + d + 1) ? -1 : 1;
   }
+};
+
+template <typename T>
+struct Fixed_Size_Hash {
+  const int n;
+  const ull base;
+  vector<T> v;
+  ull hashed;
+  vector<ull> pw;
+
+  Fixed_Size_Hash(const vector<T> &v, ull base) : n(v.size()), base(base), v(v) {
+    hashed = 0;
+    pw.assign(n + 1, 1);
+    for (int i = 0; i < n; i++) {
+      pw[i + 1] = hash_mul(pw[i], base);
+      hashed = hash_mul(hashed, base) + v[i];
+      if (hashed >= mod) hashed -= mod;
+    }
+  }
+
+  Fixed_Size_Hash(int m, const T &x, ull base) : Fixed_Size_Hash(vector<T>(m, x), base) {}
+
+  ull add(int i, const T &x) {
+    hashed += hash_mul(pw[n - 1 - i], mod + x);
+    if (hashed >= mod) hashed -= mod;
+    v[i] += x;
+    return hashed;
+  }
+
+  ull change(int i, const T &x) { return add(i, x - v[i]); }
+
+  ull get_hash() const { return hashed; }
 };
