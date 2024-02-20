@@ -5,8 +5,8 @@
 #include <iostream>
 #include <vector>
 
-using std::vector;
 using std::cin;
+using std::vector;
 
 template <typename T = int> struct Edge {
   int from, to;
@@ -48,8 +48,7 @@ template <typename T = int> struct Graph {
       a += padding;
       b += padding;
       T c = T(1);
-      if (weighted)
-        cin >> c;
+      if (weighted) cin >> c;
       if (directed)
         add_directed_edge(a, b, c);
       else

@@ -13,12 +13,10 @@ struct node {
 
   void pull() { sum = l->sum + r->sum; }
 
-} *root[_];
+} * root[_];
 
 void build(node *p, int l, int r) {
-  if (l == r) {
-    return;
-  }
+  if (l == r) { return; }
 
   int mid = (l + r) / 2;
   build(p->l = new node(), l, mid);
@@ -43,12 +41,8 @@ void modify(node *p, int l, int r, int x, int v) {
 }
 
 int query(node *p, int l, int r, int ln, int rn) {
-  if (rn < l || ln > r) {
-    return 0;
-  }
-  if (ln <= l && r <= rn) {
-    return p->sum;
-  }
+  if (rn < l || ln > r) { return 0; }
+  if (ln <= l && r <= rn) { return p->sum; }
 
   int mid = (l + r) / 2;
   return query(p->l, l, mid, ln, rn) + query(p->r, mid + 1, r, ln, rn);

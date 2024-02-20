@@ -6,12 +6,11 @@
 #include <utility>
 #include <vector>
 
-using std::vector;
 using std::cin;
 using std::queue;
+using std::vector;
 
-template <typename T>
-struct edge {
+template <typename T> struct edge {
   int src, to;
   T cost;
 
@@ -25,10 +24,8 @@ struct edge {
 
   operator int() const { return to; }
 };
-template <typename T>
-using Edges = vector<edge<T>>;
-template <typename T>
-using WeightedGraph = vector<Edges<T>>;
+template <typename T> using Edges = vector<edge<T>>;
+template <typename T> using WeightedGraph = vector<Edges<T>>;
 using UnweightedGraph = vector<vector<int>>;
 
 // Input of (Unweighted) Graph
@@ -144,9 +141,9 @@ vector<T> Depth(const WeightedGraph<T> &g, int start = 0) {
   return d;
 }
 
-using std::pair;
-using std::max_element;
 using std::make_pair;
+using std::max_element;
+using std::pair;
 
 // Diameter of Tree
 // return value : { {u, v}, length }
@@ -170,8 +167,7 @@ pair<pair<int, int>, T> Diameter(const WeightedGraph<T> &g) {
 }
 
 // nodes on the path u-v ( O(N) )
-template <typename G>
-vector<int> Path(G &g, int u, int v) {
+template <typename G> vector<int> Path(G &g, int u, int v) {
   vector<int> ret;
   int end = 0;
   auto dfs = [&](auto rec, int cur, int par = -1) -> void {

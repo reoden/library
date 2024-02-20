@@ -20,8 +20,7 @@ template <class F> void each(Node *n, F f) {
 }
 
 std::pair<Node *, Node *> split(Node *n, int k) {
-  if (!n)
-    return {};
+  if (!n) return {};
   if (cnt(n->l) >= k) { // "n->val >= k" for lower_bound(k)
     auto pa = split(n->l, k);
     n->l = pa.second;
@@ -37,10 +36,8 @@ std::pair<Node *, Node *> split(Node *n, int k) {
 }
 
 Node *merge(Node *l, Node *r) {
-  if (!l)
-    return r;
-  if (!r)
-    return l;
+  if (!l) return r;
+  if (!r) return l;
 
   if (l->y > r->y) {
     l->r = merge(l->r, r);

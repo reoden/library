@@ -1,12 +1,11 @@
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
 
-using std::vector;
-using std::pair;
-
-// @ from Kude return [primes, Minimum prime factor]
+namespace Kude {
+// Kude return [primes, Minimum prime factor]
 pair<vector<int>, vector<int>> primes_lpf(const int n) {
-  vector<int> primes; primes.reserve(n / 10);
+  vector<int> primes;
+  primes.reserve(n / 10);
   vector<int> lpf(n + 1);
   for (int i = 2; i <= n; i += 2) lpf[i] = 2;
   for (int i = 3; i <= n; i += 6) lpf[i] = 3;
@@ -38,7 +37,7 @@ pair<vector<int>, vector<int>> primes_lpf(const int n) {
   }
   return {std::move(primes), std::move(lpf)};
 }
- 
+
 constexpr int PSIZE = 1000000;
 auto [primes, lpf] = primes_lpf(PSIZE);
-
+} // namespace Kude

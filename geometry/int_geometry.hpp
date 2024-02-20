@@ -28,9 +28,7 @@ struct P {
   // 比较字典序
   bool operator<(P p) const {
     int c = cmp(x, p.x);
-    if (c) {
-      return c == -1;
-    }
+    if (c) { return c == -1; }
     return cmp(y, p.y) == -1;
   }
   bool operator==(P o) const { return cmp(x, o.x) == 0 && cmp(y, o.y) == 0; }
@@ -94,12 +92,8 @@ P isLL(P p1, P p2, P q1, P q2) {
 P isLL(L l1, L l2) { return isLL(l1[0], l1[1], l2[0], l2[1]); }
 
 bool intersect(db l1, db r1, db l2, db r2) {
-  if (l1 > r1) {
-    swap(l1, r1);
-  }
-  if (l2 > r2) {
-    swap(l2, r2);
-  }
+  if (l1 > r1) { swap(l1, r1); }
+  if (l2 > r2) { swap(l2, r2); }
   return !(cmp(r1, l2) == -1 || cmp(r2, l1) == -1);
 }
 
@@ -139,20 +133,15 @@ P proj(P p1, P p2, P q) {
 }
 P reflect(P p1, P p2, P q) { return proj(p1, p2, q) * 2 - q; }
 db nearest(P p1, P p2, P q) {
-  if (p1 == p2) {
-    return p1.distTo(q);
-  }
+  if (p1 == p2) { return p1.distTo(q); }
   P h = proj(p1, p2, q);
-  if (isMiddle(p1, h, p2)) {
-    return q.distTo(h);
-  }
+  if (isMiddle(p1, h, p2)) { return q.distTo(h); }
   return min(p1.distTo(q), p2.distTo(q));
 }
 
 // 线段距离
 db disSS(P p1, P p2, P q1, P q2) {
-  if (isSS(p1, p2, q1, q2))
-    return 0;
+  if (isSS(p1, p2, q1, q2)) return 0;
   return min(min(nearest(p1, p2, q1), nearest(p1, p2, q2)),
              min(nearest(q1, q2, p1), nearest(q1, q2, p2)));
 }
@@ -173,9 +162,7 @@ db incircle(P p1, P p2, P p3) {
 db area(vector<P> ps) {
   db ret = 0;
   int N = ps.size();
-  for (int i = 0; i < N; ++i) {
-    ret += ps[i].det(ps[(i + 1) % N]);
-  }
+  for (int i = 0; i < N; ++i) { ret += ps[i].det(ps[(i + 1) % N]); }
   return ret / 2;
 }
 
@@ -185,15 +172,9 @@ int contain(vector<P> ps, P p) {
   int n = ps.size(), ret = 0;
   for (int i = 0; i < n; i++) {
     P u = ps[i], v = ps[(i + 1) % n];
-    if (onSeg(u, v, p)) {
-      return 1;
-    }
-    if (cmp(u.y, v.y) <= 0) {
-      swap(u, v);
-    }
-    if (cmp(p.y, u.y) > 0 || cmp(p.y, v.y) <= 0) {
-      continue;
-    }
+    if (onSeg(u, v, p)) { return 1; }
+    if (cmp(u.y, v.y) <= 0) { swap(u, v); }
+    if (cmp(p.y, u.y) > 0 || cmp(p.y, v.y) <= 0) { continue; }
     ret ^= crossOp(p, u, v) > 0;
   }
   return ret * 2;
@@ -202,21 +183,15 @@ int contain(vector<P> ps, P p) {
 // 凸包
 vector<P> convexHull(vector<P> ps) {
   int n = ps.size();
-  if (n <= 1) {
-    return ps;
-  }
+  if (n <= 1) { return ps; }
   sort(ps.begin(), ps.end());
   vector<P> qs(n * 2);
   int k = 0;
   for (int i = 0; i < n; qs[k++] = ps[i++]) {
-    while (k > 1 && crossOp(qs[k - 2], qs[k - 1], ps[i]) <= 0) {
-      --k;
-    }
+    while (k > 1 && crossOp(qs[k - 2], qs[k - 1], ps[i]) <= 0) { --k; }
   }
   for (int i = n - 2, t = k; i >= 0; qs[k++] = ps[i--]) {
-    while (k > t && crossOp(qs[k - 2], qs[k - 1], ps[i]) <= 0) {
-      --k;
-    }
+    while (k > t && crossOp(qs[k - 2], qs[k - 1], ps[i]) <= 0) { --k; }
   }
   qs.resize(k - 1);
   return qs;
@@ -224,21 +199,15 @@ vector<P> convexHull(vector<P> ps) {
 vector<P> convexHullNonStrict(vector<P> ps) {
   // caution: need to unique the Ps first
   int n = ps.size();
-  if (n <= 1) {
-    return ps;
-  }
+  if (n <= 1) { return ps; }
   sort(ps.begin(), ps.end());
   vector<P> qs(n * 2);
   int k = 0;
   for (int i = 0; i < n; qs[k++] = ps[i++]) {
-    while (k > 1 && crossOp(qs[k - 2], qs[k - 1], ps[i]) < 0) {
-      --k;
-    }
+    while (k > 1 && crossOp(qs[k - 2], qs[k - 1], ps[i]) < 0) { --k; }
   }
   for (int i = n - 2, t = k; i >= 0; qs[k++] = ps[i--]) {
-    while (k > t && crossOp(qs[k - 2], qs[k - 1], ps[i]) < 0) {
-      --k;
-    }
+    while (k > t && crossOp(qs[k - 2], qs[k - 1], ps[i]) < 0) { --k; }
   }
   qs.resize(k - 1);
   return qs;
@@ -247,9 +216,7 @@ vector<P> convexHullNonStrict(vector<P> ps) {
 // 凸包直径
 db convexDiameter(vector<P> ps) {
   int n = ps.size();
-  if (n <= 1) {
-    return 0;
-  }
+  if (n <= 1) { return 0; }
   int is = 0, js = 0;
   for (int k = 1; k < n; k++) {
     is = ps[k] < ps[is] ? k : is, js = ps[js] < ps[k] ? k : js;
@@ -274,12 +241,8 @@ vector<P> convexCut(const vector<P> &ps, P q1, P q2) {
   for (int i = 0; i < n; i++) {
     P p1 = ps[i], p2 = ps[(i + 1) % n];
     int d1 = crossOp(q1, q2, p1), d2 = crossOp(q1, q2, p2);
-    if (d1 >= 0) {
-      qs.push_back(p1);
-    }
-    if (d1 * d2 < 0) {
-      qs.push_back(isLL(p1, p2, q1, q2));
-    }
+    if (d1 >= 0) { qs.push_back(p1); }
+    if (d1 * d2 < 0) { qs.push_back(isLL(p1, p2, q1, q2)); }
   }
   return qs;
 }
@@ -289,9 +252,7 @@ db min_dist(vector<P> &ps, int l, int r) {
   if (r - l <= 5) {
     db ret = 1e18;
     for (int i = l; i < r; ++i) {
-      for (int j = l; j < i; ++j) {
-        ret = min(ret, ps[i].distTo(ps[j]));
-      }
+      for (int j = l; j < i; ++j) { ret = min(ret, ps[i].distTo(ps[j])); }
     }
 
     return ret;
@@ -300,9 +261,7 @@ db min_dist(vector<P> &ps, int l, int r) {
   db ret = min(min_dist(ps, l, m), min_dist(ps, m, r));
   vector<P> qs;
   for (int i = l; i < r; ++i) {
-    if (abs(ps[i].x - ps[m].x) <= ret) {
-      qs.push_back(ps[i]);
-    }
+    if (abs(ps[i].x - ps[m].x) <= ret) { qs.push_back(ps[i]); }
   }
 
   sort(qs.begin(), qs.end(), [](P a, P b) -> bool { return a.y < b.y; });
@@ -319,25 +278,15 @@ db min_dist(vector<P> &ps, int l, int r) {
 
 int type(P o1, db r1, P o2, db r2) {
   db d = o1.distTo(o2);
-  if (cmp(d, r1 + r2) == 1) {
-    return 4;
-  }
-  if (cmp(d, r1 + r2) == 0) {
-    return 3;
-  }
-  if (cmp(d, abs(r1 - r2)) == 1) {
-    return 2;
-  }
-  if (cmp(d, abs(r1 - r2)) == 0) {
-    return 1;
-  }
+  if (cmp(d, r1 + r2) == 1) { return 4; }
+  if (cmp(d, r1 + r2) == 0) { return 3; }
+  if (cmp(d, abs(r1 - r2)) == 1) { return 2; }
+  if (cmp(d, abs(r1 - r2)) == 0) { return 1; }
   return 0;
 }
 
 vector<P> isCL(P o, db r, P p1, P p2) {
-  if (cmp(abs((o - p1).det(p2 - p1) / p1.distTo(p2)), r) > 0) {
-    return {};
-  }
+  if (cmp(abs((o - p1).det(p2 - p1) / p1.distTo(p2)), r) > 0) { return {}; }
 
   db x = (p1 - o).dot(p2 - p1);
   db y = (p2 - p1).abs2();
@@ -350,12 +299,8 @@ vector<P> isCL(P o, db r, P p1, P p2) {
 // need to check whether two circles are the same
 vector<P> isCC(P o1, db r1, P o2, db r2) {
   db d = o1.distTo(o2);
-  if (cmp(d, r1 + r2) == 1) {
-    return {};
-  }
-  if (cmp(d, abs(r1 - r2)) == -1) {
-    return {};
-  }
+  if (cmp(d, r1 + r2) == 1) { return {}; }
+  if (cmp(d, abs(r1 - r2)) == -1) { return {}; }
 
   d = min(d, r1 + r2);
   db y = (r1 * r1 + d * d - r2 * r2) / (2 * d), x = sqrt(r1 * r1 - y * y);
@@ -407,9 +352,7 @@ vector<L> intanCC(P o1, db r1, P o2, db r2) {
 
 db areaCT(db r, P p1, P p2) {
   vector<P> is = isCL(P(0, 0), r, p1, p2);
-  if (is.empty()) {
-    return r * r * rad(p1, p2) / 2;
-  }
+  if (is.empty()) { return r * r * rad(p1, p2) / 2; }
 
   bool b1 = cmp(p1.abs2(), r * r) == 1, b2 = cmp(p2.abs2(), r * r) == 1;
   if (b1 && b2) {
@@ -422,12 +365,8 @@ db areaCT(db r, P p1, P p2) {
     }
   }
 
-  if (b1) {
-    return (r * r * rad(p1, is[0]) + is[0].det(p2)) / 2;
-  }
-  if (b2) {
-    return (p1.det(is[1]) + r * r * rad(is[1], p2)) / 2;
-  }
+  if (b1) { return (r * r * rad(p1, is[0]) + is[0].det(p2)) / 2; }
+  if (b2) { return (p1.det(is[1]) + r * r * rad(is[1], p2)) / 2; }
 
   return p1.det(p2) / 2;
 }
@@ -460,18 +399,15 @@ vector<P> halfPlaneIS(vector<L> &l) {
   sort(l.begin(), l.end());
   deque<L> q;
   for (int i = 0; i < (int)l.size(); ++i) {
-    if (i && sameDir(l[i], l[i - 1]))
-      continue;
+    if (i && sameDir(l[i], l[i - 1])) continue;
     while (q.size() > 1 && !check(q[q.size() - 2], q[q.size() - 1], l[i]))
       q.pop_back();
-    while (q.size() > 1 && !check(q[1], q[0], l[i]))
-      q.pop_front();
+    while (q.size() > 1 && !check(q[1], q[0], l[i])) q.pop_front();
     q.push_back(l[i]);
   }
   while (q.size() > 2 && !check(q[q.size() - 2], q[q.size() - 1], q[0]))
     q.pop_back();
-  while (q.size() > 2 && !check(q[1], q[0], q[q.size() - 1]))
-    q.pop_front();
+  while (q.size() > 2 && !check(q[1], q[0], q[q.size() - 1])) q.pop_front();
   vector<P> ret;
   for (int i = 0; i < (int)q.size(); ++i)
     ret.push_back(isLL(q[i], q[(i + 1) % q.size()]));

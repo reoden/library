@@ -17,9 +17,7 @@ struct LineContainer : std::multiset<Line, std::less<>> {
   }
 
   bool isect(iterator x, iterator y) {
-    if (y == end()) {
-      return x->p == inf, 0;
-    }
+    if (y == end()) { return x->p == inf, 0; }
     if (x->k == y->k)
       x->p = x->m > y->m ? inf : -inf;
     else
@@ -30,13 +28,9 @@ struct LineContainer : std::multiset<Line, std::less<>> {
 
   void add(long long k, long long m) {
     auto z = insert({k, m, 0}), y = z++, x = y;
-    while (isect(y, z))
-      z = erase(z);
-    if (x != begin() && isect(--x, y))
-      isect(x, y = erase(y));
-    while ((y = x) != begin() && (--x)->p >= y->p) {
-      isect(x, erase(y));
-    }
+    while (isect(y, z)) z = erase(z);
+    if (x != begin() && isect(--x, y)) isect(x, y = erase(y));
+    while ((y = x) != begin() && (--x)->p >= y->p) { isect(x, erase(y)); }
   }
 
   long long query(long long x) {

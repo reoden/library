@@ -1,54 +1,78 @@
-#include <random>
-
+#include "../misc/random.cpp"
+#include <bits/stdc++.h>
 using namespace std;
-using ULL = unsigned long long;
-const int maxn = 1e6 + 5;
-static const ULL mod = (1ull << 61) - 1;
-ULL power[maxn];
-mt19937_64 rnd(random_device{}());
-uniform_int_distribution<ULL> dist(100, mod - 1);
-const ULL base = dist(rnd);
- 
-static inline ULL add(ULL a, ULL b){
-  a += b;
-  if (a >= mod) a -= mod;
-  return a;
-}
- 
-static inline ULL mul(ULL a, ULL b){
-  __uint128_t c = __uint128_t(a) * b;
-  return add(c >> 61, c & mod);
-}
- 
-ULL merge(ULL h1, ULL h2, int len2){
-  return add(mul(h1, power[len2]), h2);
-}
- 
-void init(){
-  power[0] = 1;
-  for(int i = 1; i < maxn; i++)
-    power[i] = mul(power[i - 1], base);
-}
- 
-ULL query(const vector<ULL> &s, int l, int r){
-  return add(s[r], mod - mul(s[l - 1], power[r - l + 1]));
-}
- 
-vector<ULL> build(const string &s){
-  int sz = s.size();
-  vector<ULL> hashed(sz + 1);
-  for (int i = 0; i < sz; i++){
-    hashed[i + 1] = add(mul(hashed[i], base), s[i]);
+
+template <typename T = string> struct Rolling_Hash {
+  const int n;
+  const ull base; // 基数
+  vector<ull> hashed, pw;
+
+  Rolling_Hash(const T &s, ull base) : n(s.size()), base(base) {
+    hashed.assign(n + 1, 0), pw.assign(n + 1, 1);
+    for (int i = 0; i < n; i++) {
+      pw[i + 1] = hash_mul(pw[i], base);
+      hashed[i + 1] = hash_mul(hashed[i], base) + s[i];
+      if (hashed[i + 1] >= mod) hashed[i + 1] -= mod;
+    }
   }
-  return hashed;
-}
- 
-template <typename T>
-vector<ULL> build(const vector<T> &s){
-  int sz = s.size();
-  vector<ULL> hashed(sz + 1);
-  for (int i = 0; i < sz; i++){
-    hashed[i + 1] = add(mul(hashed[i], base), s[i]);
+
+  // 文字列の [l,r) の部分のハッシュ値
+  ull get_hash(int l, int r) const {
+    ull ret = hashed[r] + mod - hash_mul(hashed[l], pw[r - l]);
+    return ret - (ret >= mod ? mod : 0);
   }
-  return hashed;
-}
+
+  ull get_all_hash() const { return hashed[n]; }
+
+  // s[l1:r1] と s[l2:r2] の最長共通接頭辞
+  int lcp(int l1, int r1, int l2, int r2) {
+    int ok = 0, ng = min(r1 - l1, r2 - l2) + 1;
+    while (ng - ok > 1) {
+      int mid = (ok + ng) / 2;
+      (get_hash(l1, l1 + mid) == get_hash(l2, l2 + mid) ? ok : ng) = mid;
+    }
+    return ok;
+  }
+
+  // s[l1:r1) と s[l2:r2) の辞書順大小比較 (-1 : <, 0 : =, 1 : >)
+  int comp(int l1, int r1, int l2, int r2) {
+    int d = lcp(l1, r1, l2, r2);
+    if (r1 == l1 + d && r2 == l2 + d) return 0;
+    if (r1 == l1 + d) return -1;
+    if (r2 == l2 + d) return 1;
+    return get_hash(l1 + d, l1 + d + 1) < get_hash(l2 + d, l2 + d + 1) ? -1 : 1;
+  }
+};
+
+template <typename T> struct Fixed_Size_Hash {
+  const int n;
+  const ull base;
+  vector<T> v;
+  ull hashed;
+  vector<ull> pw;
+
+  Fixed_Size_Hash(const vector<T> &v, ull base)
+      : n(v.size()), base(base), v(v) {
+    hashed = 0;
+    pw.assign(n + 1, 1);
+    for (int i = 0; i < n; i++) {
+      pw[i + 1] = hash_mul(pw[i], base);
+      hashed = hash_mul(hashed, base) + v[i];
+      if (hashed >= mod) hashed -= mod;
+    }
+  }
+
+  Fixed_Size_Hash(int m, const T &x, ull base)
+      : Fixed_Size_Hash(vector<T>(m, x), base) {}
+
+  ull add(int i, const T &x) {
+    hashed += hash_mul(pw[n - 1 - i], mod + x);
+    if (hashed >= mod) hashed -= mod;
+    v[i] += x;
+    return hashed;
+  }
+
+  ull change(int i, const T &x) { return add(i, x - v[i]); }
+
+  ull get_hash() const { return hashed; }
+};

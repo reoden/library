@@ -6,10 +6,10 @@
 #include <string>
 #include <type_traits>
 
-using std::string;
 using std::enable_if;
 using std::is_floating_point;
 using std::is_integral;
+using std::string;
 
 static struct FastInput {
   static constexpr int BUF_SIZE = 1 << 20;
@@ -18,7 +18,7 @@ static struct FastInput {
   size_t buf_pos = 0;
   FILE *in = stdin;
   char cur = 0;
- 
+
   inline char get_char() {
     if (buf_pos >= chars_read) {
       chars_read = fread(buf, 1, BUF_SIZE, in);
@@ -27,42 +27,33 @@ static struct FastInput {
     }
     return cur = buf[buf_pos++];
   }
- 
+
   inline void tie(int) {}
- 
-  inline explicit operator bool() {
-    return cur != -1;
-  }
- 
-  inline static bool is_blank(char c) {
-    return c <= ' ';
-  }
- 
+
+  inline explicit operator bool() { return cur != -1; }
+
+  inline static bool is_blank(char c) { return c <= ' '; }
+
   inline bool skip_blanks() {
-    while (is_blank(cur) && cur != -1) {
-      get_char();
-    }
+    while (is_blank(cur) && cur != -1) { get_char(); }
     return cur != -1;
   }
- 
-  inline FastInput& operator>>(char& c) {
+
+  inline FastInput &operator>>(char &c) {
     skip_blanks();
     c = cur;
     return *this;
   }
-  
-  inline FastInput& operator>>(string& s) {
+
+  inline FastInput &operator>>(string &s) {
     if (skip_blanks()) {
       s.clear();
-      do {
-        s += cur;
-      } while (!is_blank(get_char()));
+      do { s += cur; } while (!is_blank(get_char()));
     }
     return *this;
   }
- 
-  template <typename T>
-  inline FastInput& read_integer(T& n) {
+
+  template <typename T> inline FastInput &read_integer(T &n) {
     // unsafe, doesn't check that characters are actually digits
     n = 0;
     if (skip_blanks()) {
@@ -71,27 +62,25 @@ static struct FastInput {
         sign = -1;
         get_char();
       }
-      do {
-        n += n + (n << 3) + cur - '0';
-      } while (!is_blank(get_char()));
+      do { n += n + (n << 3) + cur - '0'; } while (!is_blank(get_char()));
       n *= sign;
     }
     return *this;
   }
- 
+
   template <typename T>
-  inline typename enable_if<is_integral<T>::value, FastInput&>::type operator>>(T& n) {
+  inline typename enable_if<is_integral<T>::value, FastInput &>::type
+  operator>>(T &n) {
     return read_integer(n);
   }
-  
-  #if !defined(_WIN32) || defined(_WIN64)
-  inline FastInput& operator>>(__int128& n) {
-    return read_integer(n);
-  }
-  #endif
- 
+
+#if !defined(_WIN32) || defined(_WIN64)
+  inline FastInput &operator>>(__int128 &n) { return read_integer(n); }
+#endif
+
   template <typename T>
-  inline typename enable_if<is_floating_point<T>::value, FastInput&>::type operator>>(T& n) {
+  inline typename enable_if<is_floating_point<T>::value, FastInput &>::type
+  operator>>(T &n) {
     // not sure if really fast, for compatibility only
     n = 0;
     if (skip_blanks()) {
@@ -102,7 +91,7 @@ static struct FastInput {
     return *this;
   }
 } fast_input;
- 
+
 #define cin fast_input
 
 static struct FastOutput {
@@ -129,16 +118,12 @@ static struct FastOutput {
   }
 
   inline FastOutput &operator<<(const char *s) {
-    while (*s) {
-      put_char(*s++);
-    }
+    while (*s) { put_char(*s++); }
     return *this;
   }
 
   inline FastOutput &operator<<(const string &s) {
-    for (int i = 0; i < (int)s.size(); i++) {
-      put_char(s[i]);
-    }
+    for (int i = 0; i < (int)s.size(); i++) { put_char(s[i]); }
     return *this;
   }
 
@@ -157,9 +142,7 @@ static struct FastOutput {
         *--p = (char)('0' + n % 10);
         n /= 10;
       }
-      if (is_negative) {
-        *--p = '-';
-      }
+      if (is_negative) { *--p = '-'; }
     }
     return p;
   }
@@ -183,9 +166,7 @@ static struct FastOutput {
 
   template <typename T> inline FastOutput &operator<<(const T &n) {
     auto p = stringify(n);
-    for (; *p != 0; p++) {
-      put_char(*p);
-    }
+    for (; *p != 0; p++) { put_char(*p); }
     return *this;
   }
 } fast_output;

@@ -10,9 +10,7 @@ template <class T, int N> struct Matrix {
     M a;
     for (int i = 0; i < N; i++) {
       for (int j = 0; j < N; j++) {
-        for (int k = 0; k < N; k++) {
-          a.d[i][j] += d[i][k] * m.d[k][j];
-        }
+        for (int k = 0; k < N; k++) { a.d[i][j] += d[i][k] * m.d[k][j]; }
       }
     }
   }
@@ -20,9 +18,7 @@ template <class T, int N> struct Matrix {
   std::vector<T> operator*(const std::vector<T> &vec) const {
     std::vector<T> ret(N);
     for (int i = 0; i < N; i++) {
-      for (int j = 0; j < N; j++) {
-        ret[i] += d[i][j] * vec[j];
-      }
+      for (int j = 0; j < N; j++) { ret[i] += d[i][j] * vec[j]; }
     }
 
     return ret;
@@ -31,13 +27,10 @@ template <class T, int N> struct Matrix {
   M operator^(long long p) const {
     assert(p >= 0);
     M a, b(*this);
-    for (int i = 0; i < N; i++) {
-      a.d[i][i] = 1;
-    }
+    for (int i = 0; i < N; i++) { a.d[i][i] = 1; }
 
     while (p) {
-      if (p & 1)
-        a = a * b;
+      if (p & 1) a = a * b;
       b = b * b;
       p >>= 1;
     }

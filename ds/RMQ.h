@@ -1,12 +1,12 @@
-#include <algorithm>
-#include <cassert>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
+
 template <class T> struct RMQ {
-  std::vector<std::vector<T>> jmp;
+  vector<vector<T>> jmp;
 
-  T f(T a, T b) { return std::min(a, b); }
+  T f(T a, T b) { return min(a, b); }
 
-  RMQ(const std::vector<T> &V) : jmp(1, V) {
+  RMQ(const vector<T> &V) : jmp(1, V) {
     for (int pw = 1, k = 1; pw * 2 <= V.size(); pw *= 2, ++k) {
       jmp.emplace_back(V.size() - pw * 2 + 1);
       for (int j = 0; j < jmp[k].size(); j++) {
