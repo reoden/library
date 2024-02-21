@@ -7,12 +7,8 @@ template <typename _ModType> struct Barrett {
   __uint128_t m_Pinv;
 
   constexpr Barrett() = default;
-
-  constexpr explicit Barrett(_ModType __P)
-      : m_P(__P), m_Pinv(-uint64_t(__P) / __P + 1) {}
-
+  constexpr explicit Barrett(_ModType __P) : m_P(__P), m_Pinv(-uint64_t(__P) / __P + 1) {}
   constexpr _ModType mod() const { return m_P; }
-
   constexpr _ModType mod(uint64_t __a) const {
     __a -= uint64_t(m_Pinv * __a >> 64) * m_P + m_P;
     if (__a >= m_P) __a += m_P;
@@ -23,12 +19,10 @@ template <typename _ModType> struct Barrett {
     if (__a += __b; __a >= m_P) __a -= m_P;
     return __a;
   }
-
   constexpr _ModType minus(_ModType __a, _ModType __b) {
     if (__a += m_P - __b; __a >= m_P) __a -= m_P;
     return __a;
   }
-
   constexpr _ModType multiply(uint64_t __a, uint64_t __b) const {
     if constexpr (std::is_same_v<_ModType, uint64_t>)
       return multiply_ld(__a, __b);
@@ -165,8 +159,8 @@ template <typename _ModType> struct Montgomery {
   }
 
   constexpr _ModType reduce(_FastType __a) const {
-    _ModType res = -_ModType(_LongType(__a * m_Pinv) * m_P >>
-                             _MontgomeryTag<_ModType>::length);
+    _ModType res =
+        -_ModType(_LongType(__a * m_Pinv) * m_P >> _MontgomeryTag<_ModType>::length);
     if (res >= mod()) res += mod();
     return res;
   }

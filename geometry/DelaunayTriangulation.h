@@ -20,7 +20,7 @@ template <class P, class F> void delaunay(vector<P> &ps, F trifun) {
   vector<P3> p3;
   trav(p, ps) p3.emplace_back(p.x, p.y, p.dist2());
   if (sz(ps) > 3)
-    trav(t, hull3d(p3)) if ((p3[t.b] - p3[t.a])
-                                .cross(p3[t.c] - p3[t.a])
-                                .dot(P3(0, 0, 1)) < 0) trifun(t.a, t.c, t.b);
+    trav(t,
+         hull3d(p3)) if ((p3[t.b] - p3[t.a]).cross(p3[t.c] - p3[t.a]).dot(P3(0, 0, 1)) <
+                         0) trifun(t.a, t.c, t.b);
 }

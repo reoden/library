@@ -8,8 +8,7 @@ struct SCC {
   std::vector<std::vector<int>> G;
   std::vector<int> comp; // component id vertex v belongs to
 
-  SCC(int n)
-      : G(n), comp(n, -1), n(n), time(0), group_num(0), ord(n, -1), low(n) {}
+  SCC(int n) : G(n), comp(n, -1), n(n), time(0), group_num(0), ord(n, -1), low(n) {}
 
   void add_edge(int u, int v) {
     assert(0 <= u && u < n);

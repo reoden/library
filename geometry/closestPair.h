@@ -9,9 +9,7 @@
 #include "Point.h"
 
 template <class It> bool it_less(const It &i, const It &j) { return *i < *j; }
-template <class It> bool y_it_less(const It &i, const It &j) {
-  return i->y < j->y;
-}
+template <class It> bool y_it_less(const It &i, const It &j) { return i->y < j->y; }
 
 template <class It, class IIt> /* IIt = vector<It>::iterator */
 double cp_sub(IIt ya, IIt yaend, IIt xa, It &i1, It &i2) {

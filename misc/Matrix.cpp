@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace Nyaan {
 template <class T> struct Matrix {
   std::vector<std::vector<T>> A;
 
@@ -9,15 +10,10 @@ template <class T> struct Matrix {
   Matrix(int n) : A(n, std::vector<T>(n, T())){};
 
   int H() const { return A.size(); }
-
   int W() const { return A[0].size(); }
-
   int size() const { return A.size(); }
-
   inline const std::vector<T> &operator[](int k) const { return A[k]; }
-
   inline std::vector<T> &operator[](int k) { return A[k]; }
-
   static Matrix I(int n) {
     Matrix mat(n);
     for (int i = 0; i < n; i++) mat[i][i] = 1;
@@ -63,11 +59,8 @@ template <class T> struct Matrix {
   }
 
   Matrix operator+(const Matrix &B) const { return (Matrix(*this) += B); }
-
   Matrix operator-(const Matrix &B) const { return (Matrix(*this) -= B); }
-
   Matrix operator*(const Matrix &B) const { return (Matrix(*this) *= B); }
-
   Matrix operator^(const long long k) const { return (Matrix(*this) ^= k); }
 
   bool operator==(const Matrix &B) const {
@@ -90,9 +83,7 @@ template <class T> struct Matrix {
     int n = p.H(), m = p.W();
     for (int i = 0; i < n; i++) {
       os << (i ? "   " : "") << "[";
-      for (int j = 0; j < m; j++) {
-        os << p[i][j] << (j + 1 == m ? "]\n" : ",");
-      }
+      for (int j = 0; j < m; j++) { os << p[i][j] << (j + 1 == m ? "]\n" : ","); }
     }
     return (os);
   }
@@ -130,3 +121,4 @@ template <class T> struct Matrix {
 /**
  * @brief 行列ライブラリ
  */
+} // namespace Nyaan

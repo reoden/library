@@ -5,9 +5,7 @@ const int INF = 1e9 + 5;
 
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count() *
                ((uint64_t) new char | 1));
-
 using hash_t = uint64_t;
-
 // When P = 2^32 - 13337, both P and (P - 1) / 2 are prime.
 const hash_t HASH_P = (unsigned)-13337;
 
@@ -21,53 +19,39 @@ vector<unsigned> hash_pow[HASH_COUNT];
 struct string_hash {
   vector<unsigned> prefix_hash[HASH_COUNT];
   string result;
-
   string_hash() {}
-
   template <typename T_string> string_hash(const T_string &str) { build(str); }
-
   int length() const { return max((int)prefix_hash[0].size() - 1, 0); }
 
   template <typename T_string> void build(const T_string &str) {
     for (int h = 0; h < HASH_COUNT; h++) {
       if (hash_pow[h].empty()) hash_pow[h] = {1};
-
       while (hash_pow[h].size() <= str.size())
         hash_pow[h].push_back(HASH_MULT[h] * hash_pow[h].back() % HASH_P);
-
       prefix_hash[h].resize(str.size() + 1);
       prefix_hash[h][0] = 0;
-
       for (int i = 0; i < (int)str.size(); i++)
-        prefix_hash[h][i + 1] =
-            (HASH_MULT[h] * prefix_hash[h][i] + str[i]) % HASH_P;
+        prefix_hash[h][i + 1] = (HASH_MULT[h] * prefix_hash[h][i] + str[i]) % HASH_P;
     }
   }
 
   void add_char(char c) {
     result += c;
-
     for (int h = 0; h < HASH_COUNT; h++) {
       if (hash_pow[h].empty()) hash_pow[h] = {1};
-
       hash_pow[h].push_back(HASH_MULT[h] * hash_pow[h].back() % HASH_P);
-
       if (prefix_hash[h].empty()) prefix_hash[h] = {0};
-
-      prefix_hash[h].push_back((HASH_MULT[h] * prefix_hash[h].back() + c) %
-                               HASH_P);
+      prefix_hash[h].push_back((HASH_MULT[h] * prefix_hash[h].back() + c) % HASH_P);
     }
   }
 
   void pop_char() {
     result.pop_back();
-
     for (int h = 0; h < HASH_COUNT; h++) { prefix_hash[h].pop_back(); }
   }
 
   hash_t _substring_hash(int h, int start, int end) const {
-    hash_t start_hash =
-        (hash_t)prefix_hash[h][start] * hash_pow[h][end - start];
+    hash_t start_hash = (hash_t)prefix_hash[h][start] * hash_pow[h][end - start];
     return (prefix_hash[h][end] + HASH_P * HASH_P - start_hash) % HASH_P;
   }
 

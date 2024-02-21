@@ -33,9 +33,7 @@ struct HullIntersection {
     }
   }
 
-  int qd(P p) {
-    return (p.y < 0) ? (p.x >= 0) + 2 : (p.x <= 0) * (1 + (p.y <= 0));
-  }
+  int qd(P p) { return (p.y < 0) ? (p.x >= 0) + 2 : (p.x <= 0) * (1 + (p.y <= 0)); }
 
   int bs(P dir) {
     int lo = -1, hi = N;

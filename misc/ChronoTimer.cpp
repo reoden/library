@@ -10,7 +10,6 @@ struct ChronoTimer {
 
   std::chrono::milliseconds::rep elapsed() {
     auto ed = std::chrono::high_resolution_clock::now();
-    return std::chrono::duration_cast<std::chrono::milliseconds>(ed - st)
-        .count();
+    return std::chrono::duration_cast<std::chrono::milliseconds>(ed - st).count();
   }
 };

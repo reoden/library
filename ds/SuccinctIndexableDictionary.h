@@ -29,8 +29,7 @@ struct SuccinctIndexableDictionary {
   bool operator[](int k) { return (bool((bit[k >> 5] >> (k & 31)) & 1)); }
 
   int rank(int k) {
-    return (sum[k >> 5] +
-            __builtin_popcount(bit[k >> 5] & ((1U << (k & 31)) - 1)));
+    return (sum[k >> 5] + __builtin_popcount(bit[k >> 5] & ((1U << (k & 31)) - 1)));
   }
 
   int rank(bool val, int k) { return (val ? rank(k) : k - rank(k)); }

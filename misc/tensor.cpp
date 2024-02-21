@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace ecnerwala {
 template <typename T, int NDIMS> struct tensor_view {
   static_assert(NDIMS >= 0, "NDIMS must be nonnegative");
 
@@ -9,8 +10,7 @@ protected:
   std::array<int, NDIMS> strides;
   T *data;
 
-  tensor_view(std::array<int, NDIMS> shape_, std::array<int, NDIMS> strides_,
-              T *data_)
+  tensor_view(std::array<int, NDIMS> shape_, std::array<int, NDIMS> strides_, T *data_)
       : shape(shape_), strides(strides_), data(data_) {}
 
 public:
@@ -39,9 +39,7 @@ public:
     return data[flatten_index(idx)];
 #endif
   }
-  T &at(std::array<int, NDIMS> idx) const {
-    return data[flatten_index_checked(idx)];
-  }
+  T &at(std::array<int, NDIMS> idx) const { return data[flatten_index_checked(idx)]; }
 
   template <int D = NDIMS>
   typename std::enable_if<(0 < D), tensor_view<T, NDIMS - 1>>::type
@@ -54,8 +52,7 @@ public:
     return tensor_view<T, NDIMS - 1>(nshape, nstrides, ndata);
   }
   template <int D = NDIMS>
-  typename std::enable_if<(0 < D), tensor_view<T, NDIMS - 1>>::type
-  at(int idx) const {
+  typename std::enable_if<(0 < D), tensor_view<T, NDIMS - 1>>::type at(int idx) const {
     assert(0 <= idx && idx < shape[0]);
     return operator[](idx);
   }
@@ -114,9 +111,7 @@ public:
   operator view_t() { return view(); }
 
   using const_view_t = tensor_view<const T, NDIMS>;
-  const_view_t view() const {
-    return tensor_view<const T, NDIMS>(shape, strides, data);
-  }
+  const_view_t view() const { return tensor_view<const T, NDIMS>(shape, strides, data); }
   operator const_view_t() const { return view(); }
 
   T &operator[](std::array<int, NDIMS> idx) { return view()[idx]; }
@@ -125,13 +120,11 @@ public:
   const T &at(std::array<int, NDIMS> idx) const { return view().at(idx); }
 
   template <int D = NDIMS>
-  typename std::enable_if<(0 < D), tensor_view<T, NDIMS - 1>>::type
-  operator[](int idx) {
+  typename std::enable_if<(0 < D), tensor_view<T, NDIMS - 1>>::type operator[](int idx) {
     return view()[idx];
   }
   template <int D = NDIMS>
-  typename std::enable_if<(0 < D), tensor_view<T, NDIMS - 1>>::type
-  at(int idx) {
+  typename std::enable_if<(0 < D), tensor_view<T, NDIMS - 1>>::type at(int idx) {
     return view().at(idx);
   }
 
@@ -146,8 +139,7 @@ public:
     return view().at(idx);
   }
 
-  template <int D = NDIMS>
-  typename std::enable_if<(0 == D), T &>::type operator*() {
+  template <int D = NDIMS> typename std::enable_if<(0 == D), T &>::type operator*() {
     return *view();
   }
   template <int D = NDIMS>
@@ -155,3 +147,4 @@ public:
     return *view();
   }
 };
+}

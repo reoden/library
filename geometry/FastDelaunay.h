@@ -29,8 +29,7 @@ struct Quad {
 };
 
 bool circ(P p, P a, P b, P c) { // is p in the circumcircle?
-  lll p2 = p.dist2(), A = a.dist2() - p2, B = b.dist2() - p2,
-      C = c.dist2() - p2;
+  lll p2 = p.dist2(), A = a.dist2() - p2, B = b.dist2() - p2, C = c.dist2() - p2;
   return p.cross(a, b) * C + p.cross(b, c) * A + p.cross(c, a) * B > 0;
 }
 Q makeEdge(P orig, P dest) {
@@ -80,14 +79,14 @@ pair<Q, Q> rec(const vector<P> &s) {
   if (A->p == ra->p) ra = base->r();
   if (B->p == rb->p) rb = base;
 
-#define DEL(e, init, dir)                                                      \
-  Q e = init->dir;                                                             \
-  if (valid(e))                                                                \
-    while (circ(e->dir->F(), H(base), e->F())) {                               \
-      Q t = e->dir;                                                            \
-      splice(e, e->prev());                                                    \
-      splice(e->r(), e->r()->prev());                                          \
-      e = t;                                                                   \
+#define DEL(e, init, dir)                                                                \
+  Q e = init->dir;                                                                       \
+  if (valid(e))                                                                          \
+    while (circ(e->dir->F(), H(base), e->F())) {                                         \
+      Q t = e->dir;                                                                      \
+      splice(e, e->prev());                                                              \
+      splice(e->r(), e->r()->prev());                                                    \
+      e = t;                                                                             \
     }
   for (;;) {
     DEL(LC, base->r(), o);
@@ -109,15 +108,15 @@ vector<P> triangulate(vector<P> pts) {
   vector<Q> q = {e};
   int qi = 0;
   while (e->o->F().cross(e->F(), e->p) < 0) e = e->o;
-#define ADD                                                                    \
-  {                                                                            \
-    Q c = e;                                                                   \
-    do {                                                                       \
-      c->mark = 1;                                                             \
-      pts.push_back(c->p);                                                     \
-      q.push_back(c->r());                                                     \
-      c = c->next();                                                           \
-    } while (c != e);                                                          \
+#define ADD                                                                              \
+  {                                                                                      \
+    Q c = e;                                                                             \
+    do {                                                                                 \
+      c->mark = 1;                                                                       \
+      pts.push_back(c->p);                                                               \
+      q.push_back(c->r());                                                               \
+      c = c->next();                                                                     \
+    } while (c != e);                                                                    \
   }
   ADD;
   pts.clear();

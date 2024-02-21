@@ -40,8 +40,7 @@ template <typename T = int> struct Graph {
     g[to].emplace_back(to, from, cost, es++);
   }
 
-  void read(int M, int padding = -1, bool weighted = false,
-            bool directed = false) {
+  void read(int M, int padding = -1, bool weighted = false, bool directed = false) {
     for (int i = 0; i < M; i++) {
       int a, b;
       cin >> a >> b;

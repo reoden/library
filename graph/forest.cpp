@@ -162,9 +162,7 @@ public:
     }
   }
 
-  inline bool anc(int x, int y) {
-    return (pos[x] <= pos[y] && end[y] <= end[x]);
-  }
+  inline bool anc(int x, int y) { return (pos[x] <= pos[y] && end[y] <= end[x]); }
 
   inline int go_up(int x, int up) {
     assert(!pr.empty());

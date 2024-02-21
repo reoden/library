@@ -46,9 +46,7 @@ vector<pair<int, int>> enumerate_palindromes(const Container &vec) {
 template <typename Container>
 vector<int> enumerate_leftmost_palindromes(const Container &vec) {
   vector<int> v(vec.size(), 1);
-  for (auto &[l, r] : enumerate_palindromes(vec)) {
-    v[r - 1] = max(v[r - 1], r - l);
-  }
+  for (auto &[l, r] : enumerate_palindromes(vec)) { v[r - 1] = max(v[r - 1], r - l); }
   for (int i = (int)vec.size() - 2; i >= 0; i--) v[i] = max(v[i], v[i + 1] - 2);
   vector<int> ret(vec.size());
   for (int i = 0; i < (int)vec.size(); i++) ret[i] = i + 1 - v[i];

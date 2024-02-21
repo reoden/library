@@ -15,8 +15,8 @@ vector<pii> antipodal(const vector<P> &S, vi &U, vi &L) {
   int i = 0, j = sz(L) - 1;
   while (i < sz(U) - 1 || j > 0) {
     ret.emplace_back(U[i], L[j]);
-    if (j == 0 || (i != sz(U) - 1 &&
-                   (S[L[j]] - S[L[j - 1]]).cross(S[U[i + 1]] - S[U[i]]) > 0))
+    if (j == 0 ||
+        (i != sz(U) - 1 && (S[L[j]] - S[L[j - 1]]).cross(S[U[i + 1]] - S[U[i]]) > 0))
       ++i;
     else
       --j;
@@ -28,7 +28,6 @@ pii polygonDiameter(const vector<P> &S) {
   vi U, L;
   tie(U, L) = ulHull(S);
   pair<ll, pii> ans;
-  trav(x, antipodal(S, U, L)) ans =
-      max(ans, {(S[x.first] - S[x.second]).dist2(), x});
+  trav(x, antipodal(S, U, L)) ans = max(ans, {(S[x.first] - S[x.second]).dist2(), x});
   return ans.second;
 }

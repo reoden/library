@@ -12,9 +12,7 @@ int dp[20][100][20][20];
  * */
 int dfs(int pos, int md, int odd, int even, int lead, int limit) {
   if (!pos) { return !md && odd == even; }
-  if (!limit && !lead && ~dp[pos][md][odd][even]) {
-    return dp[pos][md][odd][even];
-  }
+  if (!limit && !lead && ~dp[pos][md][odd][even]) { return dp[pos][md][odd][even]; }
 
   int res = 0, up = limit ? a[pos] : 9;
   for (int i = 0; i <= up; i++) {
@@ -22,8 +20,8 @@ int dfs(int pos, int md, int odd, int even, int lead, int limit) {
       res += dfs(pos - 1, md, odd, even, lead && !i, limit && i == up);
       continue;
     }
-    res += dfs(pos - 1, (md * 10 + i) % k, odd + (i & 1), even + (~i & 1),
-               lead && !i, limit && i == up);
+    res += dfs(pos - 1, (md * 10 + i) % k, odd + (i & 1), even + (~i & 1), lead && !i,
+               limit && i == up);
   }
 
   return limit ? res : dp[pos][md][odd][even] = res;

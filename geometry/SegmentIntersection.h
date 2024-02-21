@@ -27,8 +27,8 @@ segmentIntersectionQ to get just a true/false answer. \end{minipage}
 #include "Point.h"
 
 template <class P>
-int segmentIntersection(const P &s1, const P &e1, const P &s2, const P &e2,
-                        P &r1, P &r2) {
+int segmentIntersection(const P &s1, const P &e1, const P &s2, const P &e2, P &r1,
+                        P &r2) {
   if (e1 == s1) {
     if (e2 == s2) {
       if (e1 == e2) {

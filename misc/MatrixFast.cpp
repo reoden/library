@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace Nyaan {
 template <typename T, int H, int W> struct Matrix {
   using Array = std::array<std::array<T, W>, H>;
   Array A;
@@ -83,9 +84,7 @@ template <typename T, int H, int W> struct Matrix {
   friend std::ostream &operator<<(std::ostream &os, const Matrix &p) {
     for (int i = 0; i < H; i++) {
       os << "[";
-      for (int j = 0; j < W; j++) {
-        os << p[i][j] << (j + 1 == W ? "]\n" : ",");
-      }
+      for (int j = 0; j < W; j++) { os << p[i][j] << (j + 1 == W ? "]\n" : ","); }
     }
     return (os);
   }
@@ -123,3 +122,4 @@ template <typename T, int H, int W> struct Matrix {
 /**
  * @brief 行列ライブラリ(std::array版)
  */
+}

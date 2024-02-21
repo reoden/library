@@ -184,8 +184,7 @@ public:
 
   friend std::ostream &operator<<(std::ostream &os, lazy_segtree &ls) {
     os << "{";
-    for (int i = 0; i < ls._n; i++)
-      os << ls.get(i) << (i == ls._n - 1 ? "" : ", ");
+    for (int i = 0; i < ls._n; i++) os << ls.get(i) << (i == ls._n - 1 ? "" : ", ");
     return os << "}";
   }
 

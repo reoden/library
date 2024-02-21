@@ -26,8 +26,7 @@ template <class T> struct Fenwick {
     return ret;
   }
 
-  template <class OStream>
-  friend OStream &operator<<(OStream &os, const Fenwick &bit) {
+  template <class OStream> friend OStream &operator<<(OStream &os, const Fenwick &bit) {
     T prv = 0;
     os << '[';
     for (int i = 1; i <= bit.n; i++) {

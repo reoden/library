@@ -127,8 +127,7 @@ vector<int> Depth(const UnweightedGraph &g, int start = 0) {
 
 // Depth of Rooted Weighted Tree
 // unvisited nodes : d = -1
-template <typename T>
-vector<T> Depth(const WeightedGraph<T> &g, int start = 0) {
+template <typename T> vector<T> Depth(const WeightedGraph<T> &g, int start = 0) {
   vector<T> d(g.size(), -1);
   auto dfs = [&](auto rec, int cur, T val, int par = -1) -> void {
     d[cur] = val;
@@ -157,8 +156,7 @@ pair<pair<int, int>, int> Diameter(const UnweightedGraph &g) {
 
 // Diameter of Weighted Tree
 // return value : { {u, v}, length }
-template <typename T>
-pair<pair<int, int>, T> Diameter(const WeightedGraph<T> &g) {
+template <typename T> pair<pair<int, int>, T> Diameter(const WeightedGraph<T> &g) {
   auto d = Depth(g, 0);
   int u = max_element(begin(d), end(d)) - begin(d);
   d = Depth(g, u);

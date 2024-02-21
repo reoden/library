@@ -6,8 +6,7 @@ using std::numeric_limits;
 
 // restore shortest path from S to G
 template <typename T>
-vector<int> restore_shortest_path(WeightedGraph<T> &g, vector<T> &d, int S,
-                                  int G) {
+vector<int> restore_shortest_path(WeightedGraph<T> &g, vector<T> &d, int S, int G) {
   int N = g.size();
   WeightedGraph<T> rev(g.size());
   for (int i = 0; i < N; i++) {

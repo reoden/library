@@ -24,8 +24,7 @@ struct SegTree {
   vector<node> t;
   vector<Tag> lazy;
 
-  SegTree(long long _n)
-      : n(_n), h((long long)log2(n)), t(2 * _n), lazy(2 * _n) {}
+  SegTree(long long _n) : n(_n), h((long long)log2(n)), t(2 * _n), lazy(2 * _n) {}
   void apply(long long x, const Tag &tag) {
     t[x] = apply_tag(t[x], tag);
     lazy[x] = pull(lazy[x], tag);

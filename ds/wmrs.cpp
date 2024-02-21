@@ -15,8 +15,7 @@ template <typename T, int MAXLOG, typename D> struct WaveletMatrixRectangleSum {
 
   WaveletMatrixRectangleSum() = default;
 
-  WaveletMatrixRectangleSum(const vector<T> &v, const vector<D> &d)
-      : length(v.size()) {
+  WaveletMatrixRectangleSum(const vector<T> &v, const vector<D> &d) : length(v.size()) {
     assert(v.size() == d.size());
     vector<int> l(length), r(length), ord(length);
     iota(begin(ord), end(ord), 0);
@@ -37,9 +36,7 @@ template <typename T, int MAXLOG, typename D> struct WaveletMatrixRectangleSum {
       for (int i = 0; i < right; i++) { ord[left + i] = r[i]; }
       ds[level].resize(length + 1);
       ds[level][0] = D();
-      for (int i = 0; i < length; i++) {
-        ds[level][i + 1] = ds[level][i] + d[ord[i]];
-      }
+      for (int i = 0; i < length; i++) { ds[level][i + 1] = ds[level][i] + d[ord[i]]; }
     }
   }
 
@@ -66,13 +63,11 @@ template <typename T, int MAXLOG, typename D> struct WaveletMatrixRectangleSum {
   }
 };
 
-template <typename T, int MAXLOG, typename D>
-struct CompressedWaveletMatrixRectangleSum {
+template <typename T, int MAXLOG, typename D> struct CompressedWaveletMatrixRectangleSum {
   WaveletMatrixRectangleSum<int, MAXLOG, D> mat;
   vector<T> ys;
 
-  CompressedWaveletMatrixRectangleSum(const vector<T> &v, const vector<D> &d)
-      : ys(v) {
+  CompressedWaveletMatrixRectangleSum(const vector<T> &v, const vector<D> &d) : ys(v) {
     sort(begin(ys), end(ys));
     ys.erase(unique(begin(ys), end(ys)), end(ys));
     vector<int> t(v.size());
@@ -80,9 +75,7 @@ struct CompressedWaveletMatrixRectangleSum {
     mat = WaveletMatrixRectangleSum<int, MAXLOG, D>(t, d);
   }
 
-  inline int get(const T &x) {
-    return lower_bound(begin(ys), end(ys), x) - begin(ys);
-  }
+  inline int get(const T &x) { return lower_bound(begin(ys), end(ys), x) - begin(ys); }
 
   D rect_sum(int l, int r, T upper) { return mat.rect_sum(l, r, get(upper)); }
 

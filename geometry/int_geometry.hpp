@@ -51,9 +51,7 @@ struct P {
   int quad() const { return sign(y) == 1 || (sign(y) == 0 && sign(x) >= 0); }
 
   // 向量旋转
-  P rot(db an) {
-    return {db(x * cos(an) - y * sin(an)), db(x * sin(an) + y * cos(an))};
-  }
+  P rot(db an) { return {db(x * cos(an) - y * sin(an)), db(x * sin(an) + y * cos(an))}; }
 };
 
 // 线类，半平面类
@@ -74,8 +72,7 @@ struct L { // ps[0] -> ps[1]
 };
 
 // 叉积
-#define cross(p1, p2, p3)                                                      \
-  ((p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y))
+#define cross(p1, p2, p3) ((p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y))
 #define crossOp(p1, p2, p3) sign(cross(p1, p2, p3))
 
 // 判断向量平行
@@ -99,8 +96,7 @@ bool intersect(db l1, db r1, db l2, db r2) {
 
 // 判断线段相交，交在端点算不算分为严格不严格
 bool isSS(P p1, P p2, P q1, P q2) {
-  return intersect(p1.x, p2.x, q1.x, q2.x) &&
-         intersect(p1.y, p2.y, q1.y, q2.y) &&
+  return intersect(p1.x, p2.x, q1.x, q2.x) && intersect(p1.y, p2.y, q1.y, q2.y) &&
          crossOp(p1, p2, q1) * crossOp(p1, p2, q2) <= 0 &&
          crossOp(q1, q2, p1) * crossOp(q1, q2, p2) <= 0;
 }
@@ -117,9 +113,7 @@ bool isMiddle(db a, db m, db b) {
 bool isMiddle(P a, P m, P b) {
   return isMiddle(a.x, m.x, b.x) && isMiddle(a.y, m.y, b.y);
 }
-bool onSeg(P p1, P p2, P q) {
-  return crossOp(p1, p2, q) == 0 && isMiddle(p1, q, p2);
-}
+bool onSeg(P p1, P p2, P q) { return crossOp(p1, p2, q) == 0 && isMiddle(p1, q, p2); }
 bool onSeg_strict(P p1, P p2, P q) {
   return crossOp(p1, p2, q) == 0 &&
          sign((q - p1).dot(p1 - p2)) * sign((q - p2).dot(p1 - p2)) < 0;
@@ -358,8 +352,7 @@ db areaCT(db r, P p1, P p2) {
   if (b1 && b2) {
     if (sign((p1 - is[0]).dot(p2 - is[0])) <= 0 &&
         sign((p1 - is[0]).dot(p2 - is[0])) <= 0) {
-      return r * r * (rad(p1, is[0]) + rad(is[1], p2)) / 2 +
-             is[0].det(is[1]) / 2;
+      return r * r * (rad(p1, is[0]) + rad(is[1], p2)) / 2 + is[0].det(is[1]) / 2;
     } else {
       return r * r * rad(p1, p2) / 2;
     }
@@ -382,9 +375,7 @@ bool cmp(P a, P b) {
   }
 }
 
-bool sameDir(L l0, L l1) {
-  return parallel(l0, l1) && sign(l0.dir().dot(l1.dir())) == 1;
-}
+bool sameDir(L l0, L l1) { return parallel(l0, l1) && sign(l0.dir().dot(l1.dir())) == 1; }
 bool operator<(L l0, L l1) {
   if (sameDir(l0, l1)) {
     return l1.include(l0[0]);
@@ -400,13 +391,11 @@ vector<P> halfPlaneIS(vector<L> &l) {
   deque<L> q;
   for (int i = 0; i < (int)l.size(); ++i) {
     if (i && sameDir(l[i], l[i - 1])) continue;
-    while (q.size() > 1 && !check(q[q.size() - 2], q[q.size() - 1], l[i]))
-      q.pop_back();
+    while (q.size() > 1 && !check(q[q.size() - 2], q[q.size() - 1], l[i])) q.pop_back();
     while (q.size() > 1 && !check(q[1], q[0], l[i])) q.pop_front();
     q.push_back(l[i]);
   }
-  while (q.size() > 2 && !check(q[q.size() - 2], q[q.size() - 1], q[0]))
-    q.pop_back();
+  while (q.size() > 2 && !check(q[q.size() - 2], q[q.size() - 1], q[0])) q.pop_back();
   while (q.size() > 2 && !check(q[1], q[0], q[q.size() - 1])) q.pop_front();
   vector<P> ret;
   for (int i = 0; i < (int)q.size(); ++i)

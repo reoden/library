@@ -46,8 +46,7 @@ template <typename Cap, typename Cost> struct primal_dual {
       vector<int> pv(N, -1);
       vector<int> pe(N, -1);
       vector<bool> used(N, false);
-      priority_queue<pair<Cost, int>, vector<pair<Cost, int>>,
-                     greater<pair<Cost, int>>>
+      priority_queue<pair<Cost, int>, vector<pair<Cost, int>>, greater<pair<Cost, int>>>
           pq;
       pq.push(make_pair(0, s));
       d[s] = 0;

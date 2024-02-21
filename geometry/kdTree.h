@@ -17,7 +17,7 @@ bool on_x(const P &a, const P &b) { return a.x < b.x; }
 bool on_y(const P &a, const P &b) { return a.y < b.y; }
 
 struct Node {
-  P pt; // if this is a leaf, the single point in it
+  P pt;                                       // if this is a leaf, the single point in it
   T x0 = INF, x1 = -INF, y0 = INF, y1 = -INF; // bounds
   Node *first = 0, *second = 0;
 

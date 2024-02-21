@@ -7,9 +7,7 @@
  */
 #pragma once
 
-template <class P> bool sameDir(P s, P t) {
-  return s.cross(t) == 0 && s.dot(t) > 0;
-}
+template <class P> bool sameDir(P s, P t) { return s.cross(t) == 0 && s.dot(t) > 0; }
 // checks 180 <= s..t < 360?
 template <class P> bool isReflex(P s, P t) {
   auto c = s.cross(t);

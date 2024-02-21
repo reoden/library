@@ -23,9 +23,7 @@ template <class T> struct Point {
   P perp() const { return P(-y, x); }       // rotates +90 degrees
   P normal() const { return perp().unit(); }
   // returns point rotated 'a' radians ccw around the origin
-  P rotate(double a) const {
-    return P(x * cos(a) - y * sin(a), x * sin(a) + y * cos(a));
-  }
+  P rotate(double a) const { return P(x * cos(a) - y * sin(a), x * sin(a) + y * cos(a)); }
   friend ostream &operator<<(ostream &os, P p) {
     return os << "(" << p.x << "," << p.y << ")";
   }

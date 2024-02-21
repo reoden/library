@@ -78,9 +78,7 @@ template <typename T, int MAXLOG> struct WaveletMatrix {
   }
 
   // k-th(0-indexed) largest number in v[l,r)
-  T kth_largest(int l, int r, int k) {
-    return kth_smallest(l, r, r - l - k - 1);
-  }
+  T kth_largest(int l, int r, int k) { return kth_smallest(l, r, r - l - k - 1); }
 
   // count i s.t. (l <= i < r) && (v[i] < upper)
   int range_freq(int l, int r, T upper) {
@@ -123,9 +121,7 @@ template <typename T, int MAXLOG> struct CompressedWaveletMatrix {
     mat = WaveletMatrix<int, MAXLOG>(t);
   }
 
-  inline int get(const T &x) {
-    return lower_bound(begin(ys), end(ys), x) - begin(ys);
-  }
+  inline int get(const T &x) { return lower_bound(begin(ys), end(ys), x) - begin(ys); }
 
   T access(int k) { return ys[mat.access(k)]; }
 
@@ -141,9 +137,7 @@ template <typename T, int MAXLOG> struct CompressedWaveletMatrix {
 
   T kth_largest(int l, int r, int k) { return ys[mat.kth_largest(l, r, k)]; }
 
-  int range_freq(int l, int r, T upper) {
-    return mat.range_freq(l, r, get(upper));
-  }
+  int range_freq(int l, int r, T upper) { return mat.range_freq(l, r, get(upper)); }
 
   int range_freq(int l, int r, T lower, T upper) {
     return mat.range_freq(l, r, get(lower), get(upper));

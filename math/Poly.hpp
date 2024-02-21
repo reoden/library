@@ -75,8 +75,7 @@ struct barrett {
   unsigned long long im;
 
   // @param m `1 <= m < 2^31`
-  explicit barrett(unsigned int m)
-      : _m(m), im((unsigned long long)(-1) / m + 1) {}
+  explicit barrett(unsigned int m) : _m(m), im((unsigned long long)(-1) / m + 1) {}
 
   // @return m
   unsigned int umod() const { return _m; }
@@ -102,8 +101,7 @@ struct barrett {
     unsigned long long x;
     _umul128(z, im, &x);
 #else
-    unsigned long long x =
-        (unsigned long long)(((unsigned __int128)(z)*im) >> 64);
+    unsigned long long x = (unsigned long long)(((unsigned __int128)(z)*im) >> 64);
 #endif
     unsigned int v = (unsigned int)(z - x * _m);
     if (_m <= v) v += _m;
@@ -224,10 +222,8 @@ template <int m> constexpr int primitive_root = primitive_root_constexpr(m);
 // @param n `n < 2^32`
 // @param m `1 <= m < 2^32`
 // @return sum_{i=0}^{n-1} floor((ai + b) / m) (mod 2^64)
-unsigned long long floor_sum_unsigned(unsigned long long n,
-                                      unsigned long long m,
-                                      unsigned long long a,
-                                      unsigned long long b) {
+unsigned long long floor_sum_unsigned(unsigned long long n, unsigned long long m,
+                                      unsigned long long a, unsigned long long b) {
   unsigned long long ans = 0;
   while (true) {
     if (a >= m) {
@@ -263,10 +259,9 @@ namespace internal {
 
 #ifndef _MSC_VER
 template <class T>
-using is_signed_int128 =
-    typename std::conditional<std::is_same<T, __int128_t>::value ||
-                                  std::is_same<T, __int128>::value,
-                              std::true_type, std::false_type>::type;
+using is_signed_int128 = typename std::conditional<std::is_same<T, __int128_t>::value ||
+                                                       std::is_same<T, __int128>::value,
+                                                   std::true_type, std::false_type>::type;
 
 template <class T>
 using is_unsigned_int128 =
@@ -275,28 +270,24 @@ using is_unsigned_int128 =
                               std::true_type, std::false_type>::type;
 
 template <class T>
-using make_unsigned_int128 =
-    typename std::conditional<std::is_same<T, __int128_t>::value, __uint128_t,
-                              unsigned __int128>;
+using make_unsigned_int128 = typename std::conditional<std::is_same<T, __int128_t>::value,
+                                                       __uint128_t, unsigned __int128>;
 
 template <class T>
 using is_integral =
-    typename std::conditional<std::is_integral<T>::value ||
-                                  is_signed_int128<T>::value ||
+    typename std::conditional<std::is_integral<T>::value || is_signed_int128<T>::value ||
                                   is_unsigned_int128<T>::value,
                               std::true_type, std::false_type>::type;
 
 template <class T>
 using is_signed_int =
-    typename std::conditional<(is_integral<T>::value &&
-                               std::is_signed<T>::value) ||
+    typename std::conditional<(is_integral<T>::value && std::is_signed<T>::value) ||
                                   is_signed_int128<T>::value,
                               std::true_type, std::false_type>::type;
 
 template <class T>
 using is_unsigned_int =
-    typename std::conditional<(is_integral<T>::value &&
-                               std::is_unsigned<T>::value) ||
+    typename std::conditional<(is_integral<T>::value && std::is_unsigned<T>::value) ||
                                   is_unsigned_int128<T>::value,
                               std::true_type, std::false_type>::type;
 
@@ -317,8 +308,7 @@ using is_signed_int =
 
 template <class T>
 using is_unsigned_int =
-    typename std::conditional<is_integral<T>::value &&
-                                  std::is_unsigned<T>::value,
+    typename std::conditional<is_integral<T>::value && std::is_unsigned<T>::value,
                               std::true_type, std::false_type>::type;
 
 template <class T>
@@ -328,11 +318,9 @@ using to_unsigned =
 
 #endif
 
-template <class T>
-using is_signed_int_t = std::enable_if_t<is_signed_int<T>::value>;
+template <class T> using is_signed_int_t = std::enable_if_t<is_signed_int<T>::value>;
 
-template <class T>
-using is_unsigned_int_t = std::enable_if_t<is_unsigned_int<T>::value>;
+template <class T> using is_unsigned_int_t = std::enable_if_t<is_unsigned_int<T>::value>;
 
 template <class T> using to_unsigned_t = typename to_unsigned<T>::type;
 
@@ -365,14 +353,12 @@ public:
   }
 
   static_modint() : _v(0) {}
-  template <class T, internal::is_signed_int_t<T> * = nullptr>
-  static_modint(T v) {
+  template <class T, internal::is_signed_int_t<T> * = nullptr> static_modint(T v) {
     long long x = (long long)(v % (long long)(umod()));
     if (x < 0) x += umod();
     _v = (unsigned int)(x);
   }
-  template <class T, internal::is_unsigned_int_t<T> * = nullptr>
-  static_modint(T v) {
+  template <class T, internal::is_unsigned_int_t<T> * = nullptr> static_modint(T v) {
     _v = (unsigned int)(v % umod());
   }
 
@@ -441,24 +427,12 @@ public:
     }
   }
 
-  friend mint operator+(const mint &lhs, const mint &rhs) {
-    return mint(lhs) += rhs;
-  }
-  friend mint operator-(const mint &lhs, const mint &rhs) {
-    return mint(lhs) -= rhs;
-  }
-  friend mint operator*(const mint &lhs, const mint &rhs) {
-    return mint(lhs) *= rhs;
-  }
-  friend mint operator/(const mint &lhs, const mint &rhs) {
-    return mint(lhs) /= rhs;
-  }
-  friend bool operator==(const mint &lhs, const mint &rhs) {
-    return lhs._v == rhs._v;
-  }
-  friend bool operator!=(const mint &lhs, const mint &rhs) {
-    return lhs._v != rhs._v;
-  }
+  friend mint operator+(const mint &lhs, const mint &rhs) { return mint(lhs) += rhs; }
+  friend mint operator-(const mint &lhs, const mint &rhs) { return mint(lhs) -= rhs; }
+  friend mint operator*(const mint &lhs, const mint &rhs) { return mint(lhs) *= rhs; }
+  friend mint operator/(const mint &lhs, const mint &rhs) { return mint(lhs) /= rhs; }
+  friend bool operator==(const mint &lhs, const mint &rhs) { return lhs._v == rhs._v; }
+  friend bool operator!=(const mint &lhs, const mint &rhs) { return lhs._v != rhs._v; }
 
 private:
   unsigned int _v;
@@ -482,14 +456,12 @@ public:
   }
 
   dynamic_modint() : _v(0) {}
-  template <class T, internal::is_signed_int_t<T> * = nullptr>
-  dynamic_modint(T v) {
+  template <class T, internal::is_signed_int_t<T> * = nullptr> dynamic_modint(T v) {
     long long x = (long long)(v % (long long)(mod()));
     if (x < 0) x += mod();
     _v = (unsigned int)(x);
   }
-  template <class T, internal::is_unsigned_int_t<T> * = nullptr>
-  dynamic_modint(T v) {
+  template <class T, internal::is_unsigned_int_t<T> * = nullptr> dynamic_modint(T v) {
     _v = (unsigned int)(v % mod());
   }
 
@@ -551,24 +523,12 @@ public:
     return eg.second;
   }
 
-  friend mint operator+(const mint &lhs, const mint &rhs) {
-    return mint(lhs) += rhs;
-  }
-  friend mint operator-(const mint &lhs, const mint &rhs) {
-    return mint(lhs) -= rhs;
-  }
-  friend mint operator*(const mint &lhs, const mint &rhs) {
-    return mint(lhs) *= rhs;
-  }
-  friend mint operator/(const mint &lhs, const mint &rhs) {
-    return mint(lhs) /= rhs;
-  }
-  friend bool operator==(const mint &lhs, const mint &rhs) {
-    return lhs._v == rhs._v;
-  }
-  friend bool operator!=(const mint &lhs, const mint &rhs) {
-    return lhs._v != rhs._v;
-  }
+  friend mint operator+(const mint &lhs, const mint &rhs) { return mint(lhs) += rhs; }
+  friend mint operator-(const mint &lhs, const mint &rhs) { return mint(lhs) -= rhs; }
+  friend mint operator*(const mint &lhs, const mint &rhs) { return mint(lhs) *= rhs; }
+  friend mint operator/(const mint &lhs, const mint &rhs) { return mint(lhs) /= rhs; }
+  friend bool operator==(const mint &lhs, const mint &rhs) { return lhs._v == rhs._v; }
+  friend bool operator!=(const mint &lhs, const mint &rhs) { return lhs._v != rhs._v; }
 
 private:
   unsigned int _v;
@@ -590,8 +550,7 @@ template <class T>
 using is_static_modint_t = std::enable_if_t<is_static_modint<T>::value>;
 
 template <class> struct is_dynamic_modint : public std::false_type {};
-template <int id>
-struct is_dynamic_modint<dynamic_modint<id>> : public std::true_type {};
+template <int id> struct is_dynamic_modint<dynamic_modint<id>> : public std::true_type {};
 
 template <class T>
 using is_dynamic_modint_t = std::enable_if_t<is_dynamic_modint<T>::value>;
@@ -715,12 +674,10 @@ void butterfly_inv(std::vector<mint> &a) {
           auto r = a[i + offset + p];
           a[i + offset] = l + r;
           a[i + offset + p] =
-              (unsigned long long)(mint::mod() + l.val() - r.val()) *
-              irot.val();
+              (unsigned long long)(mint::mod() + l.val() - r.val()) * irot.val();
           ;
         }
-        if (s + 1 != (1 << (len - 1)))
-          irot *= info.irate2[bsf(~(unsigned int)(s))];
+        if (s + 1 != (1 << (len - 1))) irot *= info.irate2[bsf(~(unsigned int)(s))];
       }
       len--;
     } else {
@@ -737,20 +694,16 @@ void butterfly_inv(std::vector<mint> &a) {
           auto a2 = 1ULL * a[i + offset + 2 * p].val();
           auto a3 = 1ULL * a[i + offset + 3 * p].val();
 
-          auto a2na3iimag =
-              1ULL * mint((mint::mod() + a2 - a3) * iimag.val()).val();
+          auto a2na3iimag = 1ULL * mint((mint::mod() + a2 - a3) * iimag.val()).val();
 
           a[i + offset] = a0 + a1 + a2 + a3;
-          a[i + offset + 1 * p] =
-              (a0 + (mint::mod() - a1) + a2na3iimag) * irot.val();
+          a[i + offset + 1 * p] = (a0 + (mint::mod() - a1) + a2na3iimag) * irot.val();
           a[i + offset + 2 * p] =
               (a0 + a1 + (mint::mod() - a2) + (mint::mod() - a3)) * irot2.val();
           a[i + offset + 3 * p] =
-              (a0 + (mint::mod() - a1) + (mint::mod() - a2na3iimag)) *
-              irot3.val();
+              (a0 + (mint::mod() - a1) + (mint::mod() - a2na3iimag)) * irot3.val();
         }
-        if (s + 1 != (1 << (len - 2)))
-          irot *= info.irate3[bsf(~(unsigned int)(s))];
+        if (s + 1 != (1 << (len - 2))) irot *= info.irate3[bsf(~(unsigned int)(s))];
       }
       len -= 2;
     }
@@ -801,8 +754,7 @@ std::vector<mint> convolution(std::vector<mint> &&a, std::vector<mint> &&b) {
 }
 
 template <class mint, internal::is_static_modint_t<mint> * = nullptr>
-std::vector<mint> convolution(const std::vector<mint> &a,
-                              const std::vector<mint> &b) {
+std::vector<mint> convolution(const std::vector<mint> &a, const std::vector<mint> &b) {
   int n = int(a.size()), m = int(b.size());
   if (!n || !m) return {};
   if (std::min(n, m) <= 60) return convolution_naive(a, b);
@@ -838,12 +790,9 @@ std::vector<long long> convolution_ll(const std::vector<long long> &a,
   static constexpr unsigned long long M1M2 = MOD1 * MOD2;
   static constexpr unsigned long long M1M2M3 = MOD1 * MOD2 * MOD3;
 
-  static constexpr unsigned long long i1 =
-      internal::inv_gcd(MOD2 * MOD3, MOD1).second;
-  static constexpr unsigned long long i2 =
-      internal::inv_gcd(MOD1 * MOD3, MOD2).second;
-  static constexpr unsigned long long i3 =
-      internal::inv_gcd(MOD1 * MOD2, MOD3).second;
+  static constexpr unsigned long long i1 = internal::inv_gcd(MOD2 * MOD3, MOD1).second;
+  static constexpr unsigned long long i2 = internal::inv_gcd(MOD1 * MOD3, MOD2).second;
+  static constexpr unsigned long long i3 = internal::inv_gcd(MOD1 * MOD2, MOD3).second;
 
   auto c1 = convolution<MOD1>(a, b);
   auto c2 = convolution<MOD2>(a, b);
@@ -872,8 +821,7 @@ std::vector<long long> convolution_ll(const std::vector<long long> &a,
     //   ((1) mod MOD1) mod 5 = 2
     //   ((2) mod MOD1) mod 5 = 3
     //   ((3) mod MOD1) mod 5 = 4
-    long long diff =
-        c1[i] - internal::safe_mod((long long)(x), (long long)(MOD1));
+    long long diff = c1[i] - internal::safe_mod((long long)(x), (long long)(MOD1));
     if (diff < 0) diff += MOD1;
     static constexpr unsigned long long offset[5] = {0, 0, M1M2M3, 2 * M1M2M3,
                                                      3 * M1M2M3};

@@ -67,12 +67,8 @@ public:
     return in;
   }
 
-  friend bool operator==(const modnum &a, const modnum &b) {
-    return a.v == b.v;
-  }
-  friend bool operator!=(const modnum &a, const modnum &b) {
-    return a.v != b.v;
-  }
+  friend bool operator==(const modnum &a, const modnum &b) { return a.v == b.v; }
+  friend bool operator!=(const modnum &a, const modnum &b) { return a.v != b.v; }
 
   modnum inv() const {
     modnum res;
@@ -126,18 +122,10 @@ public:
     --a;
     return r;
   }
-  friend modnum operator+(const modnum &a, const modnum &b) {
-    return modnum(a) += b;
-  }
-  friend modnum operator-(const modnum &a, const modnum &b) {
-    return modnum(a) -= b;
-  }
-  friend modnum operator*(const modnum &a, const modnum &b) {
-    return modnum(a) *= b;
-  }
-  friend modnum operator/(const modnum &a, const modnum &b) {
-    return modnum(a) /= b;
-  }
+  friend modnum operator+(const modnum &a, const modnum &b) { return modnum(a) += b; }
+  friend modnum operator-(const modnum &a, const modnum &b) { return modnum(a) -= b; }
+  friend modnum operator*(const modnum &a, const modnum &b) { return modnum(a) *= b; }
+  friend modnum operator/(const modnum &a, const modnum &b) { return modnum(a) /= b; }
 };
 
 template <typename T> T pow(T a, long long b) {
@@ -221,18 +209,10 @@ template <typename U, typename V> struct pairnum {
     --a;
     return r;
   }
-  friend pairnum operator+(const pairnum &a, const pairnum &b) {
-    return pairnum(a) += b;
-  }
-  friend pairnum operator-(const pairnum &a, const pairnum &b) {
-    return pairnum(a) -= b;
-  }
-  friend pairnum operator*(const pairnum &a, const pairnum &b) {
-    return pairnum(a) *= b;
-  }
-  friend pairnum operator/(const pairnum &a, const pairnum &b) {
-    return pairnum(a) /= b;
-  }
+  friend pairnum operator+(const pairnum &a, const pairnum &b) { return pairnum(a) += b; }
+  friend pairnum operator-(const pairnum &a, const pairnum &b) { return pairnum(a) -= b; }
+  friend pairnum operator*(const pairnum &a, const pairnum &b) { return pairnum(a) *= b; }
+  friend pairnum operator/(const pairnum &a, const pairnum &b) { return pairnum(a) /= b; }
 };
 
 template <typename tag> struct dynamic_modnum {
@@ -355,9 +335,7 @@ public:
     v = barrett_reduce(int64_t(v) * int64_t(o.v));
     return *this;
   }
-  dynamic_modnum &operator/=(const dynamic_modnum &o) {
-    return *this *= o.inv();
-  }
+  dynamic_modnum &operator/=(const dynamic_modnum &o) { return *this *= o.inv(); }
 
   friend dynamic_modnum operator++(dynamic_modnum &a, int) {
     dynamic_modnum r = a;
@@ -369,20 +347,16 @@ public:
     --a;
     return r;
   }
-  friend dynamic_modnum operator+(const dynamic_modnum &a,
-                                  const dynamic_modnum &b) {
+  friend dynamic_modnum operator+(const dynamic_modnum &a, const dynamic_modnum &b) {
     return dynamic_modnum(a) += b;
   }
-  friend dynamic_modnum operator-(const dynamic_modnum &a,
-                                  const dynamic_modnum &b) {
+  friend dynamic_modnum operator-(const dynamic_modnum &a, const dynamic_modnum &b) {
     return dynamic_modnum(a) -= b;
   }
-  friend dynamic_modnum operator*(const dynamic_modnum &a,
-                                  const dynamic_modnum &b) {
+  friend dynamic_modnum operator*(const dynamic_modnum &a, const dynamic_modnum &b) {
     return dynamic_modnum(a) *= b;
   }
-  friend dynamic_modnum operator/(const dynamic_modnum &a,
-                                  const dynamic_modnum &b) {
+  friend dynamic_modnum operator/(const dynamic_modnum &a, const dynamic_modnum &b) {
     return dynamic_modnum(a) /= b;
   }
 };

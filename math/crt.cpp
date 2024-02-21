@@ -46,8 +46,7 @@ constexpr std::pair<long long, long long> inv_gcd(long long a, long long b) {
 }
 
 // (rem, mod)
-pair<long long, long long> crt(const vector<long long> &r,
-                               const vector<long long> &m) {
+pair<long long, long long> crt(const vector<long long> &r, const vector<long long> &m) {
   assert(r.size() == m.size());
   int n = int(r.size());
   // Contracts: 0 <= r0 < m0

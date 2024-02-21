@@ -69,8 +69,7 @@ static struct FastInput {
   }
 
   template <typename T>
-  inline typename enable_if<is_integral<T>::value, FastInput &>::type
-  operator>>(T &n) {
+  inline typename enable_if<is_integral<T>::value, FastInput &>::type operator>>(T &n) {
     return read_integer(n);
   }
 
@@ -148,8 +147,7 @@ static struct FastOutput {
   }
 
   template <typename T>
-  inline typename enable_if<is_integral<T>::value, char *>::type
-  stringify(T n) {
+  inline typename enable_if<is_integral<T>::value, char *>::type stringify(T n) {
     return integer_to_string(n);
   }
 
@@ -158,8 +156,7 @@ static struct FastOutput {
 #endif
 
   template <typename T>
-  inline typename enable_if<is_floating_point<T>::value, char *>::type
-  stringify(T n) {
+  inline typename enable_if<is_floating_point<T>::value, char *>::type stringify(T n) {
     sprintf(tmp, "%.17f", n);
     return tmp;
   }

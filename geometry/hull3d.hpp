@@ -65,7 +65,7 @@ vector<F> hull3d(const vector<P3> &A) {
     int nw = sz(FS);
     rep(j, 0, nw) {
       F f = FS[j];
-#define C(a, b, c)                                                             \
+#define C(a, b, c)                                                                       \
   if (E(a, b).cnt() != 2) mf(f.a, f.b, i, f.c);
       C(a, b, c);
       C(a, c, b);

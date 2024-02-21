@@ -12,10 +12,7 @@ struct Frac {
   long long p, q;
 };
 
-Frac operator/(const Frac &a, const Frac &b) {
-  return Frac(a.p * b.q, a.q * b.p);
-}
-
+Frac operator/(const Frac &a, const Frac &b) { return Frac(a.p * b.q, a.q * b.p); }
 bool operator<(const Frac &a, const Frac &b) {
   return a.p != b.p ? a.p < b.p : a.q < b.q;
 }

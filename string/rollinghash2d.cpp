@@ -109,9 +109,7 @@ private:
       if (modpow(x, (md - 1) / d) <= 1) return false;
     return true;
   }
-  static inline constexpr u64 cast(const long long &a) {
-    return a < 0 ? a + md : a;
-  }
+  static inline constexpr u64 cast(const long long &a) { return a < 0 ? a + md : a; }
   static inline constexpr u64 modmul(const u64 &a, const u64 &b) {
     u128 ret = u128(a) * b;
     ret = (ret & md) + (ret >> 61);

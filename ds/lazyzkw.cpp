@@ -1,3 +1,6 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 namespace OY {
 template <typename _Tp, typename _Fp> struct LazyZkwAdd {
   _Tp operator()(const _Fp &__x, const _Tp &__y, uint32_t __size) const {
@@ -5,8 +8,7 @@ template <typename _Tp, typename _Fp> struct LazyZkwAdd {
   }
 };
 template <typename _Tp = int64_t, typename _Fp = _Tp,
-          typename _Operation = std::plus<_Tp>,
-          typename _Mapping = LazyZkwAdd<_Tp, _Fp>,
+          typename _Operation = std::plus<_Tp>, typename _Mapping = LazyZkwAdd<_Tp, _Fp>,
           typename _Composition = std::plus<_Fp>>
 struct LazyZkwTree {
   struct _Tp_FpNode {
@@ -28,9 +30,7 @@ struct LazyZkwTree {
     // else assert(m_map(m_defaultIncrement, m_defaultValue) ==
     // m_defaultValue);
   }
-  uint32_t _size(uint32_t i) {
-    return 1 << (std::__countl_zero(i) + m_depth - 31);
-  }
+  uint32_t _size(uint32_t i) { return 1 << (std::__countl_zero(i) + m_depth - 31); }
   void _apply(uint32_t i, _Fp inc) {
     if constexpr (std::is_invocable_v<_Mapping, _Fp, _Tp, int>)
       m_sub[i].val = m_map(inc, m_sub[i].val, _size(i));
@@ -55,10 +55,9 @@ struct LazyZkwTree {
     resize(__length);
   }
   template <typename _Iterator>
-  LazyZkwTree(_Iterator __first, _Iterator __last,
-              _Operation __op = _Operation(), _Mapping __map = _Mapping(),
-              _Composition __com = _Composition(), _Tp __defaultValue = _Tp(),
-              _Fp __defaultIncrement = _Fp())
+  LazyZkwTree(_Iterator __first, _Iterator __last, _Operation __op = _Operation(),
+              _Mapping __map = _Mapping(), _Composition __com = _Composition(),
+              _Tp __defaultValue = _Tp(), _Fp __defaultIncrement = _Fp())
       : m_op(__op), m_map(__map), m_com(__com), m_defaultValue(__defaultValue),
         m_defaultIncrement(__defaultIncrement) {
     _check();
@@ -76,8 +75,7 @@ struct LazyZkwTree {
       m_sub[i].inc = m_defaultIncrement;
     }
   }
-  template <typename _Iterator>
-  void reset(_Iterator __first, _Iterator __last) {
+  template <typename _Iterator> void reset(_Iterator __first, _Iterator __last) {
     m_length = __last - __first;
     m_depth = 32 - (m_length > 1 ? std::__countl_zero(m_length - 1) : 32);
     m_sub.resize(1 << (m_depth + 1));
@@ -111,8 +109,7 @@ struct LazyZkwTree {
     __right += 1 << m_depth;
     uint32_t j = 31 - std::__countl_zero(__left ^ __right);
     for (uint32_t d = m_depth; d > j; d--) _pushDown(__left >> d);
-    for (uint32_t d = j; d; d--)
-      _pushDown(__left >> d), _pushDown(__right >> d);
+    for (uint32_t d = j; d; d--) _pushDown(__left >> d), _pushDown(__right >> d);
     _apply(__left, __inc);
     _apply(__right, __inc);
     while (__left / 2 < __right / 2) {
@@ -134,8 +131,7 @@ struct LazyZkwTree {
     __right += 1 << m_depth;
     uint32_t j = 31 - __builtin_clz(__left ^ __right);
     for (uint32_t d = m_depth; d > j; d--) _pushDown(__left >> d);
-    for (uint32_t d = j; d; d--)
-      _pushDown(__left >> d), _pushDown(__right >> d);
+    for (uint32_t d = j; d; d--) _pushDown(__left >> d), _pushDown(__right >> d);
     _Tp res = m_sub[__left].val;
     for (uint32_t i = 0; i < j; i++)
       if (!(__left >> i & 1)) res = m_op(res, m_sub[__left >> i ^ 1].val);
@@ -144,28 +140,24 @@ struct LazyZkwTree {
     return m_op(res, m_sub[__right].val);
   }
   _Tp queryAll() const { return m_sub[1].val; }
-  template <typename _Judge>
-  uint32_t maxRight(uint32_t __left, _Judge __judge) {
+  template <typename _Judge> uint32_t maxRight(uint32_t __left, _Judge __judge) {
     __left += 1 << m_depth;
     for (uint32_t d = m_depth; d; d--) _pushDown(__left >> d);
     _Tp val(m_defaultValue);
     do
-      if (_Tp a(m_op(val, m_sub[__left >>= __builtin_ctz(__left)].val));
-          __judge(a))
+      if (_Tp a(m_op(val, m_sub[__left >>= __builtin_ctz(__left)].val)); __judge(a))
         val = a, __left++;
       else {
         while (__left < 1 << m_depth) {
           _pushDown(__left);
-          if (_Tp a(m_op(val, m_sub[__left *= 2].val)); __judge(a))
-            val = a, __left++;
+          if (_Tp a(m_op(val, m_sub[__left *= 2].val)); __judge(a)) val = a, __left++;
         }
         return std::min(__left - (1 << m_depth), m_length) - 1;
       }
     while (__builtin_popcount(__left) > 1);
     return m_length - 1;
   }
-  template <typename _Judge>
-  uint32_t minLeft(uint32_t __right, _Judge __judge) {
+  template <typename _Judge> uint32_t minLeft(uint32_t __right, _Judge __judge) {
     __right += (1 << m_depth) + 1;
     for (uint32_t d = m_depth; d; d--) _pushDown((__right - 1) >> d);
     _Tp val(m_defaultValue);
@@ -177,8 +169,7 @@ struct LazyZkwTree {
     if (__right > 1 << m_depth) do
         if (_Tp a(m_op(
                 val,
-                m_sub[(__right >>= __builtin_ctz(__right - (1 << m_depth))) - 1]
-                    .val));
+                m_sub[(__right >>= __builtin_ctz(__right - (1 << m_depth))) - 1].val));
             __judge(a))
           val = a, __right--;
         else {
@@ -202,23 +193,21 @@ struct LazyZkwTree {
   }
 };
 template <typename _Operation, typename _Mapping, typename _Composition,
-          typename _Tp = std::decay_t<typename decltype(std::mem_fn(
-              &_Operation::operator()))::result_type>,
-          typename _Fp = std::decay_t<typename decltype(std::mem_fn(
-              &_Composition::operator()))::result_type>>
+          typename _Tp = std::decay_t<
+              typename decltype(std::mem_fn(&_Operation::operator()))::result_type>,
+          typename _Fp = std::decay_t<
+              typename decltype(std::mem_fn(&_Composition::operator()))::result_type>>
 LazyZkwTree(uint32_t = 0, _Operation = _Operation(), _Mapping = _Mapping(),
-            _Composition = _Composition(), _Tp = _Tp(), _Tp = _Tp(),
-            _Fp = _Fp())
+            _Composition = _Composition(), _Tp = _Tp(), _Tp = _Tp(), _Fp = _Fp())
     -> LazyZkwTree<_Tp, _Fp, _Operation, _Mapping, _Composition>;
 template <typename _Iterator, typename _Operation, typename _Mapping,
           typename _Composition,
-          typename _Tp = std::decay_t<typename decltype(std::mem_fn(
-              &_Operation::operator()))::result_type>,
-          typename _Fp = std::decay_t<typename decltype(std::mem_fn(
-              &_Composition::operator()))::result_type>>
-LazyZkwTree(_Iterator, _Iterator, _Operation = _Operation(),
-            _Mapping = _Mapping(), _Composition = _Composition(), _Tp = _Tp(),
-            _Tp = _Tp(), _Fp = _Fp())
+          typename _Tp = std::decay_t<
+              typename decltype(std::mem_fn(&_Operation::operator()))::result_type>,
+          typename _Fp = std::decay_t<
+              typename decltype(std::mem_fn(&_Composition::operator()))::result_type>>
+LazyZkwTree(_Iterator, _Iterator, _Operation = _Operation(), _Mapping = _Mapping(),
+            _Composition = _Composition(), _Tp = _Tp(), _Tp = _Tp(), _Fp = _Fp())
     -> LazyZkwTree<_Tp, _Fp, _Operation, _Mapping, _Composition>;
 } // namespace OY
   /*

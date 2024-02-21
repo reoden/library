@@ -48,7 +48,5 @@ template <typename T> struct Weighted_Union_Find_Tree {
   T diff(int x, int y) { return weight(y) - weight(x); }
   int size(int x) { return -data[root(x)]; }
   bool same(int x, int y) { return root(x) == root(y); }
-  void clear() {
-    fill(begin(data), end(data), -1), fill(begin(ws), end(ws), 0);
-  }
+  void clear() { fill(begin(data), end(data), -1), fill(begin(ws), end(ws), 0); }
 };

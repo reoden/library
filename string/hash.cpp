@@ -51,8 +51,7 @@ template <typename T> struct Fixed_Size_Hash {
   ull hashed;
   vector<ull> pw;
 
-  Fixed_Size_Hash(const vector<T> &v, ull base)
-      : n(v.size()), base(base), v(v) {
+  Fixed_Size_Hash(const vector<T> &v, ull base) : n(v.size()), base(base), v(v) {
     hashed = 0;
     pw.assign(n + 1, 1);
     for (int i = 0; i < n; i++) {
@@ -61,18 +60,13 @@ template <typename T> struct Fixed_Size_Hash {
       if (hashed >= mod) hashed -= mod;
     }
   }
-
-  Fixed_Size_Hash(int m, const T &x, ull base)
-      : Fixed_Size_Hash(vector<T>(m, x), base) {}
-
+  Fixed_Size_Hash(int m, const T &x, ull base) : Fixed_Size_Hash(vector<T>(m, x), base) {}
   ull add(int i, const T &x) {
     hashed += hash_mul(pw[n - 1 - i], mod + x);
     if (hashed >= mod) hashed -= mod;
     v[i] += x;
     return hashed;
   }
-
   ull change(int i, const T &x) { return add(i, x - v[i]); }
-
   ull get_hash() const { return hashed; }
 };
