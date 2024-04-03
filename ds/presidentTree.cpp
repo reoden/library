@@ -13,7 +13,7 @@ struct node {
 
   void pull() { sum = l->sum + r->sum; }
 
-} * root[_];
+} *root[_];
 
 void build(node *p, int l, int r) {
   if (l == r) { return; }

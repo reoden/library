@@ -122,4 +122,4 @@ template <typename T, int H, int W> struct Matrix {
 /**
  * @brief 行列ライブラリ(std::array版)
  */
-}
+} // namespace Nyaan

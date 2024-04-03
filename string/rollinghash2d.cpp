@@ -201,8 +201,8 @@ template <typename Str, int BASE_NUM = 2> struct RollingHash {
 };
 
 template <typename Str, int BASE_NUM>
-typename RollingHash<Str, BASE_NUM>::Hash
-    RollingHash<Str, BASE_NUM>::basis = internal::Hash<BASE_NUM>::get_basis();
+typename RollingHash<Str, BASE_NUM>::Hash RollingHash<Str, BASE_NUM>::basis =
+    internal::Hash<BASE_NUM>::get_basis();
 using roriha = RollingHash<string, 2>;
 
 /**

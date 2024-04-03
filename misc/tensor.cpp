@@ -147,4 +147,4 @@ public:
     return *view();
   }
 };
-}
+} // namespace ecnerwala

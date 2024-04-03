@@ -7,7 +7,7 @@ int idx = 0;
 Seg SGT(n + 1);
 
 std::function<void(int, int, int)> dfs1 = [&](int u, int fa, int depth) {
-  //预处理出来轻重链
+  // 预处理出来轻重链
   parent[u] = fa;
   dep[u] = depth;
   siz[u] = 1;
@@ -36,7 +36,7 @@ std::function<void(int, int)> dfs2 = [&](int u, int t) -> void {
 };
 
 auto ask = [&](int u, int v) -> int {
-  //查询树上两个节点之间的最短距离中所有节点
+  // 查询树上两个节点之间的最短距离中所有节点
   int ans = 0;
   while (top[u] != top[v]) {
     if (dep[top[u]] < dep[top[v]]) std::swap(u, v);
@@ -50,7 +50,7 @@ auto ask = [&](int u, int v) -> int {
 };
 
 auto update = [&](int u, int v, int x) -> void {
-  //修改两个节点最短路径上
+  // 修改两个节点最短路径上
   while (top[u] != top[v]) {
     if (dep[top[u]] < dep[top[v]]) std::swap(u, v);
     SGT.change(1, dfn[top[u]], dfn[u], x);
